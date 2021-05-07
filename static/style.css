@@ -1,0 +1,22 @@
+@import url(https://fonts.googleapis.com/css2?family=Mulish&display=swap");
+
+body {
+    background: #b3d8e8;
+    padding:0;
+    margin: 0;
+}
+.navigation {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+nav {
+    background: #e6f7e8;
+    height: 70px;
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 30px;
+    margin-bottom:10px;
+}
