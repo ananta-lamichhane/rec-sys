@@ -1,4 +1,6 @@
-from rec_sys.application import login_database
+import sys
+sys.path.append("..") ### fix problem with not being able to import from higher level packages
+from application import login_database
 
 
 class User(login_database.Model): ## create database model for a user.
