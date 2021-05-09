@@ -6,6 +6,23 @@
 
 {% block content %}
 <p>
-    This will be main page of the survey. User will be redirected here to take the survey after successful login.
+    Welcome to the survey portal.
+    Please rate the following movies.
 </p>
+
+<div class="posterrow">
+    {% for poster in poster_urls %}
+        <div class="column">
+            <img src="{{poster}}">
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+        </div>
+    {% endfor %}
+</div>
+
+
+
 {% endblock content %}
