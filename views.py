@@ -2,6 +2,8 @@ from flask import render_template, Blueprint, request, url_for, flash
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.utils import redirect
 
+from utils.serve_posters import generate_poster_url_dict
+
 main_bp = Blueprint('main', __name__)
 from database.user_model import User, user_datastore
 from application import login_database
@@ -25,7 +27,6 @@ def login():
         user_password = request.form.get('password')
 
         u = User.query.filter_by(email=user_email).first()
-        print(u.username)
         ## check if user u already exists
         # TODO: implemet hash and salt on passwords
         if u and user_password == u.password:
@@ -36,10 +37,12 @@ def login():
     return render_template("login.html")
 
 
-@main_bp.route('/survey')
+@main_bp.route('/survey', methods=['GET', 'POST'])
 @login_required
 def survey():
-    return render_template("survey.html")
+    test_ids = ['tt0103859', 'tt0110443', 'tt0089489','tt0047677', 'tt0340163']
+    poster_urls = generate_poster_url_dict(test_ids)
+    return render_template("survey.html", poster_urls=poster_urls)
 
 
 @main_bp.route('/bye')
@@ -55,7 +58,6 @@ def about():
 
 
 @main_bp.route('/register', methods=['GET', 'POST'])
-@login_required
 def register():
     if request.method == 'POST':
         user_email = request.form.get('email')
