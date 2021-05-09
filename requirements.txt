@@ -23,12 +23,14 @@ Jinja2==2.11.3
 joblib==1.0.1
 MarkupSafe==1.1.1
 numpy==1.20.2
+omdb==0.10.1
 packaging==20.9
 passlib==1.7.4
 pluggy==0.13.1
 py==1.10.0
 pyparsing==2.4.7
 pytest==6.2.4
+python-dotenv==0.17.1
 pytz==2021.1
 requests==2.25.1
 scikit-surprise==1.1.1
