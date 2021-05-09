@@ -20,3 +20,21 @@ nav {
     font-size: 30px;
     margin-bottom:10px;
 }
+
+/*column of the survey film posters, use 100/no of cols perctange for width*/
+.column {
+  float: left;
+  width: 20%;
+  padding: 5px;
+}
+
+/* show row of the survey posters */
+.posterrow::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.checked {
+  color: blue;
+}
