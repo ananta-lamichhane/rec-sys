@@ -2,11 +2,13 @@ from flask import Flask
 from flask_security import Security
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from dotenv import load_dotenv
 import email_validator
 
 
 
 
+load_dotenv('.ENV')
 login_database = SQLAlchemy() ## initialize a new database
 login_manager = LoginManager()
 
