@@ -1,5 +1,7 @@
 from omdb import OMDBClient
 import os
+import random
+
 
 def generate_poster_url_dict(imdb_ids):
     """
@@ -15,3 +17,4 @@ def generate_poster_url_dict(imdb_ids):
         poster_url_list.append(poster_url)
 
     return poster_url_list
+

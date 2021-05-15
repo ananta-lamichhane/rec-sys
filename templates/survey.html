@@ -15,12 +15,9 @@
 <div class="posterrow">
     {% for poster in poster_urls %}
         <div class="column">
-            <img src="{{poster}}">
-            <span class="fa fa-star checked"></span>
-            <span class="fa fa-star checked"></span>
-            <span class="fa fa-star checked"></span>
-            <span class="fa fa-star"></span>
-            <span class="fa fa-star"></span>
+            <div class = "poster-div">
+                <img src="{{poster}}" class="posters">
+            </div>
         </div>
     {% endfor %}
 </div>
