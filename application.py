@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_security import Security
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -33,5 +33,9 @@ def create_app(): #config_file='flask_config.py'):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)
+
+    @login_manager.unauthorized_handler ## serves forbidden.html in case user no logged in.
+    def unauth_handler():
+        return render_template('forbidden.html')
 
     return app
