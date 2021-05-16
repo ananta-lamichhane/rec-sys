@@ -1,0 +1,19 @@
+/*!
+    Miri UI Kit Free V1.0.0
+    Developed by BootstrapDash(https://www.bootstrapdash.com/)
+*/
+body {
+  font-size: 13px; }
+
+.bg-gradient-black {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#e4e5e7), to(#252631));
+  background-image: linear-gradient(#e4e5e7, #252631); }
+
+
+.form-group:hover{
+  box-shadow:2px 2px 2px 2px gray;
+
+}
+.card:hover{
+  box-shadow: 10px 10px #2c2c2c;
+}
