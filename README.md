@@ -7,10 +7,20 @@ Collaborative filtering is a subset of recommer system methods that produce a us
 This project provides a web portal where researchers will be able to conduct surveys, extract survey information and compare the accuracy of various collaborative filtering algorithms. Users (survey participants) will be able to log in, fill in the survey questionnaire and rate the recommendations.
 
 ## How to install
-Since the project is an web-app. You'll need a domain name to make it available on the internet. To run web-app locally on a web-server for development, follow follow steps.
+### System requirements
+1. Linux (Tested on Ubuntu 20.04)
+2. Python 3.8
+
+### Install steps
+Since the project is an web-app. You'll need a domain name to make it available on the internet. To run web-app locally on a web-server for development, follow follow steps. 
 1. Clone
-2. Set up a [python virtual environment]: https://docs.python.org/3/library/venv.html
+2. Set up a [python virtual environment.](https://docs.python.org/3/library/venv.html)
+3. Install requirements.`pip install -r requirements.txt`
+4. Export environment variable: `export FLASK_APP=run.py`
+
+The flask web server serves the app on port 5000 (can be changed by editing run.py)
 
 ## Install on docker
+
 
 
