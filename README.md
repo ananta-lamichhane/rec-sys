@@ -7,6 +7,9 @@ Collaborative filtering is a subset of recommer system methods that produce a us
 This project provides a web portal where researchers will be able to conduct surveys, extract survey information and compare the accuracy of various collaborative filtering algorithms. Users (survey participants) will be able to log in, fill in the survey questionnaire and rate the recommendations.
 
 ## How to install
+Since the project is an web-app. You'll need a domain name to make it available on the internet. To run web-app locally on a web-server for development, follow follow steps.
+1. Clone
+2. Set up a [python virtual environment]:https://docs.python.org/3/library/venv.html
 
 ## Install on docker
 
