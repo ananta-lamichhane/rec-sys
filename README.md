@@ -17,6 +17,7 @@ Since the project is an web-app. You'll need a domain name to make it available 
 2. Set up a [python virtual environment.](https://docs.python.org/3/library/venv.html)
 3. Install requirements.`pip install -r requirements.txt`
 4. Export environment variable: `export FLASK_APP=run.py`
+5. `flask run`
 
 The flask web server serves the app on port 5000 (can be changed by editing run.py)
 
