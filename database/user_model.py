@@ -27,6 +27,7 @@ class User(login_database.Model, UserMixin):
     username = login_database.Column(login_database.String(255))
     active = login_database.Column(login_database.Boolean())
     confirmed_at = login_database.Column(login_database.DateTime())
+    ratings = login_database.Column(login_database.String(1024))
     roles = login_database.relationship('Role', secondary=roles_users,
                                         backref=login_database.backref('users', lazy='dynamic'))
 
