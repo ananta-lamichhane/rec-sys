@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    $('#done-button').on('click', function(event){ // signals the survey is done.
+   /* $('#done-button').on('click', function(event){ // signals the survey is done.
         $.ajax({
          data: {
             done: 1,
@@ -11,7 +11,7 @@ $(document).ready(function(){
         });
         event.preventDefault();
 
-    });
+    });*/
 
         $('#reset-button').on('click', function(event){ // signals the survey is done.
         $.ajax({
