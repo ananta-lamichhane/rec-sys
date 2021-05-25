@@ -3,49 +3,32 @@
     Login
 {% endblock title%}
 
-{% block content %}
+{% set active_page = 'login'%}
 
-   <!-- customised bootstrap included -->
-   <link rel="stylesheet" href="../src/css/miri-ui-kit-free.css">
-    
-    <!-- Stylesheet for demo page specific css -->
-    <link rel="stylesheet" href="../assets/css/demo.css">
-   
-</head>
-<body class="login-page">
-    <header class="miri-ui-kit-header header-no-bg-img header-navbar-only">
-        <nav class="navbar navbar-expand-lg navbar-white bg-transparent">
-            <div class="container">
-                <a class="navbar-brand" href="login.html">Login Page</a>
-               
+{% block content %}
+ <div class="column is-4 is-offset-4">
+    <h3 class="title">Please sign in</h3>
+    <div class="box">
+        <form class = "login-form" method="POST" action="">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="email" name="email" placeholder="Email" value="{{request.form.email}}" autofocus="">
                 </div>
-        </nav>
-    </header>
-    <div class="card login-card">
-        <div class="card-body">
-            <h3 class="text-center text-white font-weight-light mb-4">LOG IN</h3>
-            <form action="/">
-                <div class="form-group">
-                    <input type="text" placeholder="UserName" name="UserName" class="form-control">
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="name" placeholder="Name" value="{{request.form.username}}"  autofocus="">
                 </div>
-                <div class="form-group">
-                    <input type="email" placeholder="Email" name="Email" class="form-control">
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="password" name="password" value="{{request.form.password}}" placeholder="Password">
                 </div>
-                <div class="form-group">
-                    <input type="text" placeholder="Password" class="form-control">
-                </div>
-                <input type="submit" value="Login" class="btn btn-danger btn-block mb-3">
-            </form>
-            <!--<div class="d-flex justify-content-between mt-4">
-                <p class="text-white text-center font-weight-light">Login with</p>
-                <p class="text-center mb-0">
-                    <a href="#" class="social-login-btn icon-fb"><i class="mdi mdi-facebook-box"></i></a>
-                    <a href="#" class="social-login-btn icon-twitter"><i class="mdi mdi-twitter"></i></a>
-                    <a href="#" class="social-login-btn icon-gmail"><i class="mdi mdi-gmail"></i></a>
-                </p>
-            </div>-->
-        </div>
+            </div>
+            <button class="button is-block is-info is-large is-fullwidth">Log in</button>
+        </form>
+        <h4 class="register-prompt">Please <a href={{url_for('main.register')}}>Register</a> here.</h4>
     </div>
-   
-</body>
+</div>
+
 {% endblock %}

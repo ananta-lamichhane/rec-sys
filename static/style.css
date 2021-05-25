@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css2?family=Mulish&display=swap");
+ @import url(https://fonts.googleapis.com/css2?family=Mulish&display=swap");
 
 body {
     background: #b3d8e8;
@@ -11,7 +11,6 @@ body {
 }
 
 
-
 nav {
     background: #e6f7e8;
     height: 70px;
@@ -21,28 +20,7 @@ nav {
     margin-bottom:10px;
 }
 
-/*column of the survey film posters, use 100/no of cols perctange for width*/
-.column {
-  display: flex;
-}
 
-/* show row of the survey posters
-.posterrow::after {
-  content: "";
-  clear: both;
-  display: table;
-}*/
-
-.checked {
-  color: blue;
-}
-
-/* align stars below image */
-div.stars {
-    vertical-align: top;
-    display: inline-block;
-    align: center;
-}
 
 /* warning box its cross button and action on hover*/
 .warning-box {
@@ -63,4 +41,74 @@ div.stars {
 
 closebtn.hover {
     color: black;
+}
+
+/*login and registration forms*/
+h3 {
+    text-align: center;
+    padding: 20px
+}
+
+
+/*column of the survey film posters, use 100/no of cols perctange for width*/
+ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: stretch;
+
+}
+li {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    list-style-type: none;
+    /*height: 600px;*/
+    flex-grow: 1;
+}
+
+img {
+    max-height: 500px;
+    min-width: 300px;
+    object-fit: contain;
+    vertical-align: bottom;
+}
+
+
+
+/*ratings slider in survey page*/
+.rating-slider {
+    margin-top : 10px;
+    margin-bottom: 10px;
+    width: 300px;
+    /*margin: auto;*/
+}
+.slider {
+    -webkit-appearance: none;
+    border-radius: 5px;
+    width: 300px;
+    height: 20px;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: 0.2s
+    transition: 0.2s
+}
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius:50%;
+    cursor: pointer;
 }

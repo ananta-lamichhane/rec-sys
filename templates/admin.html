@@ -8,6 +8,63 @@
 
 {% block content %}
 <p>
-    This will be where the researcher will be able to tweak the survey.
+    Create a new study
+    <form class="create-study-form" id="create-study-form" name="Create" action="" method="post">
+    <label for="dataset-name">Dataset Name:</label>
+    <select id="dataset-name" name="datasets">
+        <option value="Movielens 100K">100k</option>
+        <option value="Movielens 10K"> 10k</option>
+        <option value="Jester Dataset">Movielens Smallest</option>
+    </select>
+    <label for="algo-name">Algorithm Name:</label>
+    <select id="algo-name" name="algorithms">
+        <option value="svd">SVD</option>
+        <option value="Baseline"> Baseline</option>
+        <option value="KNN">KNN</option>
+    </select>
+    <br>
+    <label for="input-box">Name of the study: </label>
+    <input class="text-box" id="input-box" placeholder="Name" name="survey-name">
+    <br>
+    <input type="submit" id="submit-box" name="db-action" value="Populate Database">
+    <br>
+    <p>This clears all the entries in the database except for users</p>
+    <input type="submit" id="clear-box" name="db-action" value="Clear Database">
+
+</form>
+</p>
+<br>
+    <p> Manage Users <p>
+<form class="Manage User form" id="Manage-User-form" name="Manage" action="" method="post">
+        <br>
+        <label for="Add User">Add New User</label>
+    <input type="submit" id="submit-box" name="db-action" value="Add User">
+    <br>
+
+   <br>
+        <label for="Delete User">Delete exist User</label>
+    <input type="submit" id="submit-box" name="db-action" value="Delete User">
+    <br>
+
+</form>
+</p>
+
+
+</form>
+</p>
+<br>
+    <p> Manage Survey  <p>
+<form class="Manage survey form" id="Manage-Survey-form" name="Manage" action="" method="post">
+        <br>
+        <label for="Add Dataset">Add New Dataset</label>
+    <input type="submit" id="submit-box" name="db-action" value="Add Dataset">
+    <br>
+
+   <br>
+        <label for="Add new Algorithm">Add algorithms</label>
+    <input type="submit" id="submit-box" name="db-action" value="Add algorithms">
+    <br>
+
+</form>
 </p>
 {% endblock content %}
