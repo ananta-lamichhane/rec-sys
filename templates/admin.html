@@ -8,6 +8,29 @@
 
 {% block content %}
 <p>
-    This will be where the researcher will be able to tweak the survey.
+    Create a new study
+    <form class="create-study-form" id="create-study-form" name="Create" action="" method="post">
+    <label for="dataset-name">Dataset Name:</label>
+    <select id="dataset-name" name="datasets">
+        <option value="Movielens 100K">100k</option>
+        <option value="Movielens 10K"> 10k</option>
+        <option value="Jester Dataset">Movielens Smallest</option>
+    </select>
+    <label for="algo-name">Algorithm Name:</label>
+    <select id="algo-name" name="algorithms">
+        <option value="svd">SVD</option>
+        <option value="Baseline"> Baseline</option>
+        <option value="KNN">KNN</option>
+    </select>
+    <br>
+    <label for="input-box">Name of the study: </label>
+    <input class="text-box" id="input-box" placeholder="Name" name="survey-name">
+    <br>
+    <input type="submit" id="submit-box" name="db-action" value="Populate Database">
+    <br>
+    <p>This clears all the entries in the database except for users</p>
+    <input type="submit" id="clear-box" name="db-action" value="Clear Database">
+
+</form>
 </p>
 {% endblock content %}
