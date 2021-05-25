@@ -30,7 +30,7 @@ class Dataset(login_database.Model):
     description = login_database.Column(login_database.String(200))
 
 
-class User(login_database.Model, UserMixin):
+class User(login_database.Model, UserMixin): ## Usermixin required for flask_login functions
     __tablename__ = 'user'
     id = login_database.Column(login_database.Integer(), primary_key=True)
     email = login_database.Column(login_database.String(255), unique=True)
@@ -48,15 +48,27 @@ class Rating(login_database.Model):
     __tablename__ = 'rating'
     id = login_database.Column(login_database.Integer(), primary_key=True)
     rating = login_database.Column(login_database.String(512))
-    dataset_id = login_database.Column(login_database.Integer, login_database.ForeignKey('dataset.id'))
+    dataset_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('dataset.id'))
+    item_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('item.id'))
+    user_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('user.id'))
+
 
 
 class Item(login_database.Model):
     __tablename__ = 'item'
     id = login_database.Column(login_database.Integer(), primary_key=True)
     name = login_database.Column(login_database.String(200))
-    imdb_id= login_database.Column(login_database.Integer(), unique=True)
+    imdb_id= login_database.Column(login_database.String(32), unique=True) ## cant be integer as imdb id must be 7 digit and contains leading zero.
+    dataset_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('dataset.id'))
     poster_url = login_database.Column(login_database.String(1024))
+
+
+class Study(login_database.Model):
+    __tablename__ = 'study'
+    id = login_database.Column(login_database.Integer(), primary_key=True)
+    name = login_database.Column(login_database.String(200))
+    description = login_database.Column(login_database.String(1024))
+    dataset_id = login_database.Column(login_database.Integer, login_database.ForeignKey('dataset.id'))
 
 
 # Setup Flask-Security
