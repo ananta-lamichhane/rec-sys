@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}
+    Recommendations
+{% endblock title%}
+
+{% block content %}
+<div class="poster-and-rating">
+    <ul class="posterrow">
+    {% for id, val in poster_urls.items() %}
+        <li class="column">
+            <p>{{val['title']}}({{val['year']}})</p>
+            <img src="{{val['poster']}}" class="posters">
+            <form class="survey-form" id="{{id}}" action="" method="post">
+            <div class="rating-slider">
+                    <input type="range" name="rating" min="0" max="5" step="0.5" value="2.5" class="slider" id="rating{{id}}">
+                <input type="checkbox" name="no-rating" value="False" id="dontknow{{id}}">
+                <label for="dontknow{{id}}">No idea</label>
+                <input type="hidden" name="formtype" value="2">
+                <input type="submit" class="submit-button" name="submit-rating" id="submit{{id}}" value="Submit">
+            </div>
+            </form>
+        </li>
+    {% endfor %}
+
+
+
+</ul>
+</div>
+{% endblock %}
