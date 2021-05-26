@@ -1,6 +1,10 @@
 $(document).ready(function(){
 
+<<<<<<< HEAD
     $('#done-button').on('click', function(event){ // signals the survey is done.
+=======
+   /* $('#done-button').on('click', function(event){ // signals the survey is done.
+>>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
         $.ajax({
          data: {
             done: 1,
@@ -11,7 +15,11 @@ $(document).ready(function(){
         });
         event.preventDefault();
 
+<<<<<<< HEAD
     });
+=======
+    });*/
+>>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
 
         $('#reset-button').on('click', function(event){ // signals the survey is done.
         $.ajax({

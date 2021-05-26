@@ -2,6 +2,11 @@ from flask import render_template, Blueprint, request, url_for, flash
 from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.utils import redirect
 from flask_security.utils import hash_password, verify_password
+from sqlalchemy import desc
+
+import json
+import pandas as pd
+import os
 
 import json
 
@@ -10,7 +15,7 @@ from utils.serve_posters import generate_poster_url_dict
 
 main_bp = Blueprint('main', __name__) # needs to be here
 
-from database.user_model import User, user_datastore
+from database.user_model import User, user_datastore, Study, Rating, Item
 from application import login_database
 
 
@@ -55,6 +60,7 @@ def survey():
             current_ratings = json.loads(current_user.ratings) ## load the dict with rating entries for current user.
             current_ratings[imdb_id] = rating ## add to the dict
             current_user.ratings = json.dumps(current_ratings)  ## make json string of the dict
+<<<<<<< HEAD
             login_database.session.commit() ## commit to db
             print("current rating str: " + str(current_user.ratings))
         if request.form.get('formtype') == "1": ## TODO: handle what to do when done button is clicked
@@ -62,6 +68,15 @@ def survey():
             print(current_user.ratings)
         if request.form.get('formtype') == "3": ## debugging database addition errors.
             current_user.ratings = '{}'
+=======
+            login_database.session.add(Rating(rating=rating, dataset_id=23, item_id=45678, user_id=current_user.id))
+            login_database.session.commit() ## commit to db
+            print("current rating str: " + str(current_user.ratings))
+        if request.form.get('formtype') == "1": ## TODO: handle what to do when done button is clicked
+            redirect('/recommendations', code=302)
+        if request.form.get('formtype') == "3": ## debugging database addition errors.
+            current_user.ratings = '{}' ## reset the dict
+>>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
             login_database.session.commit()
             print(current_user.ratings)
 
@@ -105,8 +120,63 @@ def register():
     return render_template("register.html")
 
 
+
+
+
+
 @main_bp.route('/admin', methods=['GET', 'POST'])
 @login_required
 def admin():
+<<<<<<< HEAD
     print(current_user.ratings)
+=======
+    users = User.query.all()
+    studies = Study.query.all()
+    ratings = login_database.session.query(Rating).all()
+    for study in studies:
+        print(study.name)
+    if request.method == 'POST':
+        if request.form.get('db-action') == "Clear Database":
+            login_database.session.query(Item).delete()
+            login_database.session.query(Rating).delete()
+            login_database.session.commit()
+        if request.form.get('db-action') == "Populate Database":
+            ratings_file = os.path.realpath('./database/datasets/movielens_small/ratings.csv')
+            movies_file =  os.path.realpath('./database/datasets/movielens_small/movies.csv')
+            links_file = os.path.realpath('./database/datasets/movielens_small/links.csv')
+            movies_df = pd.read_csv(movies_file, dtype='str')
+            links_df = pd.read_csv(links_file, dtype='str')
+            for row in movies_df.itertuples():
+                imdb_id = 'tt' + links_df.loc[links_df['movieId'] == row.movieId]['imdbId'].astype('str')
+                print(imdb_id)
+                login_database.session.add(Item(id=row.movieId, name=row.title, imdb_id=imdb_id, dataset_id=1, poster_url="empty"))
+                login_database.session.commit()
+
+            ratings_df = pd.read_csv(ratings_file, dtype='str')
+            print(ratings_df.head())
+            for row in ratings_df.itertuples(): ## populate the ratings table
+                login_database.session.add(Rating(rating = row.rating, dataset_id=5, item_id=row.movieId, user_id=row.userId))
+                login_database.session.commit()
+            survey_name = request.form.get('studies')
+            survey_description = request.form.get('survey-desc')
+            login_database.session.add(Study(description=survey_description, name=survey_name, dataset_id = 23))
+            login_database.session.commit()
+
+>>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
     return render_template("admin.html")
+
+@main_bp.route('/recommendations', methods=['GET', 'POST'])
+@login_required
+def recommend():
+    ## recommendations = highest rated movies by the user most similar to the current user, e.g. user no 483
+    recoms = Rating.query.filter_by(user_id=483).order_by(desc(Rating.rating))
+    movie_list=[]
+    for i in range(10):
+        imdb_no = Item.query.filter_by(id = recoms[i].item_id).first().imdb_id
+        idstr = 'tt' + str(imdb_no)
+        print(idstr)
+        movie_list.append(idstr)
+        print(recoms[i].rating + "  " + str(imdb_no))
+
+    movie_data = generate_poster_url_dict(movie_list)
+    return render_template('recommendations.html', poster_urls=movie_data)
