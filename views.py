@@ -8,6 +8,8 @@ import json
 import pandas as pd
 import os
 
+import json
+
 from utils.select_survey_items import select_movies_for_survey
 from utils.serve_posters import generate_poster_url_dict
 
@@ -19,7 +21,7 @@ from application import login_database
 
 @main_bp.route('/', methods=['GET', 'POST'])
 def index():
-    print(select_movies_for_survey())
+    print(select_movies_for_survey)
     return render_template("home.html")
 
 
@@ -53,6 +55,7 @@ def survey():
         if request.form.get('formtype') == "2":  ## form is submitting movie ratings.
             imdb_id = request.form.get('imdb_id')
             rating = request.form.get('rating')
+<<<<<<< HEAD
             ##search items for matching imdbid
             #TODO:differentiate between two cases : add new rating vs update existing rating
             itemid = login_database.session.query(Item).filter_by(imdb_id=imdb_id).first().id
@@ -66,6 +69,28 @@ def survey():
             redirect('/recommendations', code=302)
         if request.form.get('formtype') == "3":  ## debugging database addition errors.
             #login_database.session.query(Rating.) # TODO: implement delete ratings when clear my ratings button pressed
+=======
+            current_ratings = json.loads(current_user.ratings) ## load the dict with rating entries for current user.
+            current_ratings[imdb_id] = rating ## add to the dict
+            current_user.ratings = json.dumps(current_ratings)  ## make json string of the dict
+<<<<<<< HEAD
+            login_database.session.commit() ## commit to db
+            print("current rating str: " + str(current_user.ratings))
+        if request.form.get('formtype') == "1": ## TODO: handle what to do when done button is clicked
+            print(current_user.email)
+            print(current_user.ratings)
+        if request.form.get('formtype') == "3": ## debugging database addition errors.
+            current_user.ratings = '{}'
+=======
+            login_database.session.add(Rating(rating=rating, dataset_id=23, item_id=45678, user_id=current_user.id))
+            login_database.session.commit() ## commit to db
+            print("current rating str: " + str(current_user.ratings))
+        if request.form.get('formtype') == "1": ## TODO: handle what to do when done button is clicked
+            redirect('/recommendations', code=302)
+        if request.form.get('formtype') == "3": ## debugging database addition errors.
+            current_user.ratings = '{}' ## reset the dict
+>>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
+>>>>>>> e3ecfa9f6c39a44da6190d1047eafa92dc390bb4
             login_database.session.commit()
             print(current_user.ratings)
 
@@ -115,6 +140,9 @@ def register():
 @main_bp.route('/admin', methods=['GET', 'POST'])
 # @login_required
 def admin():
+<<<<<<< HEAD
+    print(current_user.ratings)
+=======
     users = User.query.all()
     studies = Study.query.all()
     ratings = login_database.session.query(Rating).all()
@@ -157,6 +185,7 @@ def admin():
             login_database.session.add(Study(description="", name=survey_name, dataset_id=1))
             login_database.session.commit()
 
+>>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
     return render_template("admin.html")
 
 

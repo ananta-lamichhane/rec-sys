@@ -25,9 +25,21 @@ class Role(login_database.Model, RoleMixin):
 
 class Dataset(login_database.Model):
     __tablename__ = 'dataset'
+<<<<<<< HEAD
     id = login_database.Column(login_database.Integer(), primary_key=True)
     name = login_database.Column(login_database.String(200), unique=True)
     size = login_database.Column(login_database.Integer())
+=======
+<<<<<<< HEAD
+    id = login_database.Column(login_database.Integer(), primary_key=True)
+    name = login_database.Column(login_database.String(200), unique=True)
+    size = login_database.Column(login_database.Integer)
+=======
+    id = login_database.Column(login_database.Integer(11), primary_key=True)
+    name = login_database.Column(login_database.String(200), unique=True)
+    size = login_database.Column(login_database.Integer(11))
+>>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
+>>>>>>> e3ecfa9f6c39a44da6190d1047eafa92dc390bb4
     category = login_database.Column(login_database.String(200))
     description = login_database.Column(login_database.String(200))
 
@@ -35,6 +47,7 @@ class Dataset(login_database.Model):
 class User(login_database.Model, UserMixin):
     __tablename__ = 'user'
     id = login_database.Column(login_database.Integer(), primary_key=True)
+<<<<<<< HEAD
     user_id = login_database.Column(login_database.Integer(), unique=True)
     account = login_database.Column(login_database.String(255), unique=True)
     name = login_database.Column(login_database.String(200))
@@ -47,6 +60,29 @@ class User(login_database.Model, UserMixin):
     active = login_database.Column(login_database.Boolean())  ## Why ?
     confirmed_at = login_database.Column(login_database.DateTime())  ## Why ?
     ratings = login_database.Column(login_database.String(1024))  ## Why ?
+=======
+<<<<<<< HEAD
+    email = login_database.Column(login_database.String(255), unique=True)
+    password = login_database.Column(login_database.String(255))
+    username = login_database.Column(login_database.String(255))
+    token_id = login_database.Column(login_database.Integer) ## unique?
+    active = login_database.Column(login_database.Boolean())
+    confirmed_at = login_database.Column(login_database.DateTime())
+    ratings = login_database.Column(login_database.String(1024))
+=======
+    user_id = login_database.Column(login_database.Integer(11), unique=True)
+    account = login_database.Column(login_database.String(255), unique=True)
+    name = login_database.Column(login_database.String(200))
+    token_id = login_database.Column(login_database.Integer(11),login_database.ForeignKey('token.id'), unique=True) ## unique?
+    online_user = login_database.Column(login_database.Integer(1))
+    dataset_id = login_database.Column(login_database.Integer(11),login_database.ForeignKey('dataset.id'), unique=True)
+    
+    username = login_database.Column(login_database.String(255)) ## Why ?
+    active = login_database.Column(login_database.Boolean())## Why ?
+    confirmed_at = login_database.Column(login_database.DateTime()) ## Why ?
+    ratings = login_database.Column(login_database.String(1024))## Why ?
+>>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
+>>>>>>> e3ecfa9f6c39a44da6190d1047eafa92dc390bb4
     roles = login_database.relationship('Role', secondary=roles_users,
                                         backref=login_database.backref('users', lazy='dynamic'))  ## why ?
 
@@ -159,6 +195,21 @@ class Crossvalidation(login_database.Model):
     mae = login_database.Column(login_database.Float())
     fit_time = login_database.Column(login_database.Float())
     test_time = login_database.Column(login_database.Float())
+
+
+class Rating(login_database.Model):
+    __tablename__ = 'rating'
+    id = login_database.Column(login_database.Integer(), primary_key=True)
+    rating = login_database.Column(login_database.String(512))
+    dataset_id = login_database.Column(login_database.Integer, login_database.ForeignKey('dataset.id'))
+
+
+class Item(login_database.Model):
+    __tablename__ = 'item'
+    id = login_database.Column(login_database.Integer(), primary_key=True)
+    name = login_database.Column(login_database.String(200))
+    imdb_id= login_database.Column(login_database.Integer(), unique=True)
+    poster_url = login_database.Column(login_database.String(1024))
 
 
 # Setup Flask-Security

@@ -10,18 +10,18 @@ import email_validator
 
 load_dotenv('.ENV')
 login_database = SQLAlchemy() ## initialize a new database
-login_manager = LoginManager()
+login_manager = LoginManager() ## login manager helps implement login_required, etc.
 
 
 
 def create_app(): #config_file='flask_config.py'):
     app = Flask(__name__)
-    app.config.from_object('flask_config.Configurations')
+    app.config.from_object('flask_config.Configurations') ## load configs from the file
     login_database.init_app(app)
 
     from views import main_bp
 
-    app.register_blueprint(main_bp)
+    app.register_blueprint(main_bp) ## register blueprint
 
     from database.user_model import User, Role, user_datastore
     security = Security(app, user_datastore)
