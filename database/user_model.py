@@ -6,6 +6,8 @@ from flask_security import SQLAlchemyUserDatastore, \
 sys.path.append("..")  ### fix problem with not being able to import from higher level packages
 from application import login_database
 
+
+#TODO:check unique constrants and if they make sense
 ## relational table to assign roles (admin, customer, etc.)
 roles_users = login_database.Table('roles_users',
                                    login_database.Column('user_id', login_database.Integer(),
@@ -23,9 +25,9 @@ class Role(login_database.Model, RoleMixin):
 
 class Dataset(login_database.Model):
     __tablename__ = 'dataset'
-    id = login_database.Column(login_database.Integer(11), primary_key=True)
+    id = login_database.Column(login_database.Integer(), primary_key=True)
     name = login_database.Column(login_database.String(200), unique=True)
-    size = login_database.Column(login_database.Integer(11))
+    size = login_database.Column(login_database.Integer())
     category = login_database.Column(login_database.String(200))
     description = login_database.Column(login_database.String(200))
 
@@ -33,25 +35,28 @@ class Dataset(login_database.Model):
 class User(login_database.Model, UserMixin):
     __tablename__ = 'user'
     id = login_database.Column(login_database.Integer(), primary_key=True)
-    user_id = login_database.Column(login_database.Integer(11), unique=True)
+    user_id = login_database.Column(login_database.Integer(), unique=True)
     account = login_database.Column(login_database.String(255), unique=True)
     name = login_database.Column(login_database.String(200))
-    token_id = login_database.Column(login_database.Integer(11),login_database.ForeignKey('token.id'), unique=True) ## unique?
-    online_user = login_database.Column(login_database.Integer(1))
-    dataset_id = login_database.Column(login_database.Integer(11),login_database.ForeignKey('dataset.id'), unique=True)
-    
-    username = login_database.Column(login_database.String(255)) ## Why ?
-    active = login_database.Column(login_database.Boolean())## Why ?
-    confirmed_at = login_database.Column(login_database.DateTime()) ## Why ?
-    ratings = login_database.Column(login_database.String(1024))## Why ?
+    password = login_database.Column(login_database.String(1024))
+    token_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('token.id'),
+                                     unique=True)  ## unique?
+    online_user = login_database.Column(login_database.Integer())
+    dataset_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('dataset.id'))
+    username = login_database.Column(login_database.String(255))  ## Why ?
+    active = login_database.Column(login_database.Boolean())  ## Why ?
+    confirmed_at = login_database.Column(login_database.DateTime())  ## Why ?
+    ratings = login_database.Column(login_database.String(1024))  ## Why ?
     roles = login_database.relationship('Role', secondary=roles_users,
-                                        backref=login_database.backref('users', lazy='dynamic')) ## why ?
+                                        backref=login_database.backref('users', lazy='dynamic'))  ## why ?
 
 
 class Rating(login_database.Model):
     __tablename__ = 'rating'
     id = login_database.Column(login_database.Integer(), primary_key=True)
-    rating = login_database.Column(login_database.String(512))
+    rating = login_database.Column(login_database.Float())
+    item_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('item.id'))
+    user_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('user.id'))
     dataset_id = login_database.Column(login_database.Integer, login_database.ForeignKey('dataset.id'))
 
 
@@ -59,111 +64,103 @@ class Item(login_database.Model):
     __tablename__ = 'item'
     id = login_database.Column(login_database.Integer(), primary_key=True)
     name = login_database.Column(login_database.String(200))
-    imdb_id= login_database.Column(login_database.Integer(), unique=True)
+    imdb_id = login_database.Column(login_database.Integer(), unique=True)
+    dataset_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('dataset.id'))
     poster_url = login_database.Column(login_database.String(1024))
-    
+
+
 class ReclistItem(login_database.Model):
     __tablename__ = 'reclistitem'
     id = login_database.Column(login_database.Integer(), primary_key=True)
     number = login_database.Column(login_database.Integer)
     item_id = login_database.Column(login_database.Integer, login_database.ForeignKey('item.id'))
     reclist_id = login_database.Column(login_database.Integer, login_database.ForeignKey('reclist.id'))
-    prediction = login_database.Column(login_database.Integer(20,10))
-    
+    prediction = login_database.Column(login_database.Integer())
+
 
 class Reclist(login_database.Model):
     __tablename__ = 'reclist'
     id = login_database.Column(login_database.Integer(), primary_key=True)
-    length = login_database.Column(login_database.Integer, unique = True)
-    algorithm_id = login_database.Column(login_database.Integer, login_database.ForeignKey('algorithm.id'), unique = True)
-    user_id = login_database.Column(login_database.Integer, login_database.ForeignKey('user.id'), unique = True)
-    
+    length = login_database.Column(login_database.Integer(), unique=True)
+    algorithm_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('algorithm.id'),
+                                         unique=True)
+    user_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('user.id'), unique=True)
+
+
 class Study_Algorithms(login_database.Model):
     __tablename__ = 'study_algorithms'
     id = login_database.Column(login_database.Integer(), primary_key=True)
-    algorithm_id = login_database.Column(login_database.Integer, login_database.ForeignKey('algorithm.id'), unique = True)
-    study_id = login_database.Column(login_database.Integer, login_database.ForeignKey('study.id'), unique = True)
-    
+    algorithm_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('algorithm.id'),
+                                         unique=True)
+    study_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('study.id'), unique=True)
+
+
 class Evaluation(login_database.Model):
     __tablename__ = 'evaluation'
     id = login_database.Column(login_database.Integer(), primary_key=True)
-    reclist_id = login_database.Column(login_database.Integer, login_database.ForeignKey('reclist.id')) 
-    user_id = login_database.Column(login_database.Integer, login_database.ForeignKey('user.id'), unique = True)
-    study_id = login_database.Column(login_database.Integer, login_database.ForeignKey('study.id'), unique = True)
-    utility = login_database.Column(login_database.Integer(10,2))
-    serendipity = login_database.Column(login_database.Integer(10,2))
-    novelty = login_database.Column(login_database.Integer(10,2))
-    diversity = login_database.Column(login_database.Integer(10,2))
-    unexpectedness = login_database.Column(login_database.Integer(10,2))
-    accuracy_mae = login_database.Column(login_database.Integer(10,2))
-    accuracy_mse = login_database.Column(login_database.Integer(10,2))
-    accuracy_rmse = login_database.Column(login_database.Integer(10,2))
-    non_rating_rate = login_database.Column(login_database.Integer(10,2))
+    reclist_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('reclist.id'))
+    user_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('user.id'), unique=True)
+    study_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('study.id'), unique=True)
+    utility = login_database.Column(login_database.Integer())
+    serendipity = login_database.Column(login_database.Integer())
+    novelty = login_database.Column(login_database.Integer())
+    diversity = login_database.Column(login_database.Integer())
+    unexpectedness = login_database.Column(login_database.Integer())
+    accuracy_mae = login_database.Column(login_database.Integer())
+    accuracy_mse = login_database.Column(login_database.Integer())
+    accuracy_rmse = login_database.Column(login_database.Integer())
+    non_rating_rate = login_database.Column(login_database.Integer())
+
 
 class Study(login_database.Model):
     __tablename__ = 'study'
     id = login_database.Column(login_database.Integer(), primary_key=True)
     name = login_database.Column(login_database.String(200), unique=True)
     description = login_database.Column(login_database.String(200))
-    active = login_database.Column(login_database.Integer(1))
-    dataset_id = login_database.Column(login_database.Integer(11))
-    reclist_length = login_database.Column(login_database.Integer(11))
-    
+    active = login_database.Column(login_database.Integer())
+    dataset_id = login_database.Column(login_database.Integer())
+    reclist_length = login_database.Column(login_database.Integer())
+
+
 class Algorithm(login_database.Model):
     __tablename__ = 'algorithm'
-    id = login_database.Column(login_database.Integer(11), primary_key=True)
-    name = login_database.Column(login_database.String(100), unique = True)
+    id = login_database.Column(login_database.Integer(), primary_key=True)
+    name = login_database.Column(login_database.String(100), unique=True)
     description = login_database.Column(login_database.String(200))
+
 
 class Item_Genres(login_database.Model):
     __tablename__ = 'intemgenres'
-    id = login_database.Column(login_database.Integer(11), primary_key=True)
-    item_id = login_database.Column(login_database.Integer(11), login_database.ForeignKey('item.id'), unique=True)
-    moviegenre_id = login_database.Column(login_database.Integer(11), login_database.ForeignKey('moviegenre.id'), unique = True)   
-    
+    id = login_database.Column(login_database.Integer(), primary_key=True)
+    item_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('item.id'), unique=True)
+    moviegenre_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('moviegenre.id'),
+                                          unique=True)
+
+
 class Token(login_database.Model):
     __tablename__ = 'token'
-    id = login_database.Column(login_database.Integer(11), primary_key=True)
+    id = login_database.Column(login_database.Integer(), primary_key=True)
     name = login_database.Column(login_database.String(40), unique=True)
-    valid = login_database.Column(login_database.Integer(1))
-    
+    valid = login_database.Column(login_database.Integer())
+
+
 class Moviegenre(login_database.Model):
     __tablename__ = 'moviegenre'
-    id = login_database.Column(login_database.Integer(11), primary_key=True)
+    id = login_database.Column(login_database.Integer(), primary_key=True)
     title = login_database.Column(login_database.String(100), unique=True)
-    
+
+
 class Crossvalidation(login_database.Model):
     __tablename__ = 'crossvalidation'
-    id = login_database.Column(login_database.Integer(11), primary_key=True)
-    algorithm_id = login_database.Column(login_database.Integer, login_database.ForeignKey('algorithm.id'), unique = True)
-    dataset_id = login_database.Column(login_database.Integer(11), login_database.ForeignKey('dataset.id'))
-    rmse = login_database.Column(login_database.Integer(12,10))
-    mae = login_database.Column(login_database.Integer(12,10))
-    fit_time = login_database.Column(login_database.Integer(20,4))
-    test_time = login_database.Column(login_database.Integer(20,4))
-    
+    id = login_database.Column(login_database.Integer(), primary_key=True)
+    algorithm_id = login_database.Column(login_database.Integer, login_database.ForeignKey('algorithm.id'), unique=True)
+    dataset_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('dataset.id'))
+    rmse = login_database.Column(login_database.Float())
+    mae = login_database.Column(login_database.Float())
+    fit_time = login_database.Column(login_database.Float())
+    test_time = login_database.Column(login_database.Float())
 
-    
 
 # Setup Flask-Security
-
+## datastore is required by flask security
 user_datastore = SQLAlchemyUserDatastore(login_database, User, Role)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
