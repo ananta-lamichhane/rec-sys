@@ -112,3 +112,10 @@ img {
     border-radius:50%;
     cursor: pointer;
 }
+
+/*recommendation page*/
+.recom-rating {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    align: left;
+}
