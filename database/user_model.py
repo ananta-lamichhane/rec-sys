@@ -25,21 +25,9 @@ class Role(login_database.Model, RoleMixin):
 
 class Dataset(login_database.Model):
     __tablename__ = 'dataset'
-<<<<<<< HEAD
     id = login_database.Column(login_database.Integer(), primary_key=True)
     name = login_database.Column(login_database.String(200), unique=True)
     size = login_database.Column(login_database.Integer())
-=======
-<<<<<<< HEAD
-    id = login_database.Column(login_database.Integer(), primary_key=True)
-    name = login_database.Column(login_database.String(200), unique=True)
-    size = login_database.Column(login_database.Integer)
-=======
-    id = login_database.Column(login_database.Integer(11), primary_key=True)
-    name = login_database.Column(login_database.String(200), unique=True)
-    size = login_database.Column(login_database.Integer(11))
->>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
->>>>>>> e3ecfa9f6c39a44da6190d1047eafa92dc390bb4
     category = login_database.Column(login_database.String(200))
     description = login_database.Column(login_database.String(200))
 
@@ -47,42 +35,18 @@ class Dataset(login_database.Model):
 class User(login_database.Model, UserMixin):
     __tablename__ = 'user'
     id = login_database.Column(login_database.Integer(), primary_key=True)
-<<<<<<< HEAD
     user_id = login_database.Column(login_database.Integer(), unique=True)
     account = login_database.Column(login_database.String(255), unique=True)
     name = login_database.Column(login_database.String(200))
     password = login_database.Column(login_database.String(1024))
-    token_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('token.id'),
-                                     unique=True)  ## unique?
+    token_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('token.id'),unique=True)  ## unique?
     online_user = login_database.Column(login_database.Integer())
     dataset_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('dataset.id'))
     username = login_database.Column(login_database.String(255))  ## Why ?
     active = login_database.Column(login_database.Boolean())  ## Why ?
     confirmed_at = login_database.Column(login_database.DateTime())  ## Why ?
-    ratings = login_database.Column(login_database.String(1024))  ## Why ?
-=======
-<<<<<<< HEAD
     email = login_database.Column(login_database.String(255), unique=True)
-    password = login_database.Column(login_database.String(255))
-    username = login_database.Column(login_database.String(255))
-    token_id = login_database.Column(login_database.Integer) ## unique?
-    active = login_database.Column(login_database.Boolean())
-    confirmed_at = login_database.Column(login_database.DateTime())
-    ratings = login_database.Column(login_database.String(1024))
-=======
-    user_id = login_database.Column(login_database.Integer(11), unique=True)
-    account = login_database.Column(login_database.String(255), unique=True)
-    name = login_database.Column(login_database.String(200))
-    token_id = login_database.Column(login_database.Integer(11),login_database.ForeignKey('token.id'), unique=True) ## unique?
-    online_user = login_database.Column(login_database.Integer(1))
-    dataset_id = login_database.Column(login_database.Integer(11),login_database.ForeignKey('dataset.id'), unique=True)
-    
-    username = login_database.Column(login_database.String(255)) ## Why ?
-    active = login_database.Column(login_database.Boolean())## Why ?
-    confirmed_at = login_database.Column(login_database.DateTime()) ## Why ?
     ratings = login_database.Column(login_database.String(1024))## Why ?
->>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
->>>>>>> e3ecfa9f6c39a44da6190d1047eafa92dc390bb4
     roles = login_database.relationship('Role', secondary=roles_users,
                                         backref=login_database.backref('users', lazy='dynamic'))  ## why ?
 
@@ -91,8 +55,8 @@ class Rating(login_database.Model):
     __tablename__ = 'rating'
     id = login_database.Column(login_database.Integer(), primary_key=True)
     rating = login_database.Column(login_database.Float())
-    item_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('item.id'))
-    user_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('user.id'))
+    item_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('item.id'), unique=True)
+    user_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('user.id'), unique=True)
     dataset_id = login_database.Column(login_database.Integer, login_database.ForeignKey('dataset.id'))
 
 
@@ -126,8 +90,7 @@ class Reclist(login_database.Model):
 class Study_Algorithms(login_database.Model):
     __tablename__ = 'study_algorithms'
     id = login_database.Column(login_database.Integer(), primary_key=True)
-    algorithm_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('algorithm.id'),
-                                         unique=True)
+    algorithm_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('algorithm.id'), unique=True)
     study_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('study.id'), unique=True)
 
 
@@ -137,15 +100,15 @@ class Evaluation(login_database.Model):
     reclist_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('reclist.id'))
     user_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('user.id'), unique=True)
     study_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('study.id'), unique=True)
-    utility = login_database.Column(login_database.Integer())
-    serendipity = login_database.Column(login_database.Integer())
-    novelty = login_database.Column(login_database.Integer())
-    diversity = login_database.Column(login_database.Integer())
-    unexpectedness = login_database.Column(login_database.Integer())
-    accuracy_mae = login_database.Column(login_database.Integer())
-    accuracy_mse = login_database.Column(login_database.Integer())
-    accuracy_rmse = login_database.Column(login_database.Integer())
-    non_rating_rate = login_database.Column(login_database.Integer())
+    utility = login_database.Column(login_database.Float())
+    serendipity = login_database.Column(login_database.Float())
+    novelty = login_database.Column(login_database.Float())
+    diversity = login_database.Column(login_database.Float())
+    unexpectedness = login_database.Column(login_database.Float())
+    accuracy_mae = login_database.Column(login_database.Float())
+    accuracy_mse = login_database.Column(login_database.Float())
+    accuracy_rmse = login_database.Column(login_database.Float())
+    non_rating_rate = login_database.Column(login_database.Float())
 
 
 class Study(login_database.Model):
@@ -196,22 +159,8 @@ class Crossvalidation(login_database.Model):
     fit_time = login_database.Column(login_database.Float())
     test_time = login_database.Column(login_database.Float())
 
-
-class Rating(login_database.Model):
-    __tablename__ = 'rating'
-    id = login_database.Column(login_database.Integer(), primary_key=True)
-    rating = login_database.Column(login_database.String(512))
-    dataset_id = login_database.Column(login_database.Integer, login_database.ForeignKey('dataset.id'))
-
-
-class Item(login_database.Model):
-    __tablename__ = 'item'
-    id = login_database.Column(login_database.Integer(), primary_key=True)
-    name = login_database.Column(login_database.String(200))
-    imdb_id= login_database.Column(login_database.Integer(), unique=True)
-    poster_url = login_database.Column(login_database.String(1024))
-
-
 # Setup Flask-Security
 ## datastore is required by flask security
+
+
 user_datastore = SQLAlchemyUserDatastore(login_database, User, Role)
