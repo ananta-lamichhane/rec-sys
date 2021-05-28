@@ -51,8 +51,7 @@
 
 
 </form>
-</p>
-<br>
+
     <p> Manage Survey  <p>
 <form class="Manage survey form" id="Manage-Survey-form" name="Manage" action="" method="post">
         <br>
@@ -66,5 +65,33 @@
     <br>
 
 </form>
-</p>
+
+<form class="Manage User form" id="Manage-User-form" name="Manage" action="" method="post">
+        <br>
+        <label for="Add User">Add New User</label>
+    <input type="submit" id="submit-box" name="db-action" value="Add User">
+    <br>
+
+   <br>
+        <label for="Delete User">Delete exist User.</label>
+    <input type="submit" id="submit-box" name="db-action" value="Delete User">
+    <br>
+
+</form>
+<br>
+<br>
+<p>Change Admin Password</p>
+ <form class= "login-form" method="POST" action="">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="password" title="Old Password: " name="Old Password" placeholder="Old Password" value="{{request.form.old_password}}"  autofocus="">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="password" title="New Password" name="New Password" value="{{request.form.password}}" placeholder="New Password">
+                </div>
+            </div>
+            <button class="button is-block is-info is-large is-fullwidth">Confirm</button>
+        </form>
 {% endblock content %}
