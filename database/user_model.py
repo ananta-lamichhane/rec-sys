@@ -1,27 +1,29 @@
 import sys
 
 from flask_security import SQLAlchemyUserDatastore, \
-    UserMixin, RoleMixin, login_required
+    UserMixin, RoleMixin
 
 sys.path.append("..")  ### fix problem with not being able to import from higher level packages
-from application import login_database
+from application import login_database, login_manager
 
 
-#TODO:check unique constrants and if they make sense
+# TODO:check unique constrants and if they make sense
 ## relational table to assign roles (admin, customer, etc.)
+
+# class Role(login_database.Model, RoleMixin):
+##   __tablename__ = 'role'
+#  id = login_database.Column(login_database.Integer(), primary_key=True)
+# name = login_database.Column(login_database.String(80), unique=True)
+# description = login_database.Column(login_database.String(255))
+
+# UserMixin and RoleMixin allow for flask_login functioons such as login_user, is_authenticated, etc.
+# For that we'll need User and Role class and user_datastore
+
 roles_users = login_database.Table('roles_users',
                                    login_database.Column('user_id', login_database.Integer(),
                                                          login_database.ForeignKey('user.id')),
                                    login_database.Column('role_id', login_database.Integer(),
                                                          login_database.ForeignKey('role.id')))
-
-
-class Role(login_database.Model, RoleMixin):
-    __tablename__ = 'role'
-    id = login_database.Column(login_database.Integer(), primary_key=True)
-    name = login_database.Column(login_database.String(80), unique=True)
-    description = login_database.Column(login_database.String(255))
-
 
 class Dataset(login_database.Model):
     __tablename__ = 'dataset'
@@ -31,6 +33,12 @@ class Dataset(login_database.Model):
     category = login_database.Column(login_database.String(200))
     description = login_database.Column(login_database.String(200))
 
+class Role(login_database.Model, RoleMixin):
+    __tablename__ = 'role'
+    id = login_database.Column(login_database.Integer(), primary_key=True)
+    name = login_database.Column(login_database.String(80), unique=True)
+    description = login_database.Column(login_database.String(255))
+
 
 class User(login_database.Model, UserMixin):
     __tablename__ = 'user'
@@ -39,24 +47,27 @@ class User(login_database.Model, UserMixin):
     account = login_database.Column(login_database.String(255), unique=True)
     name = login_database.Column(login_database.String(200))
     password = login_database.Column(login_database.String(1024))
-    token_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('token.id'),unique=True)  ## unique?
-    online_user = login_database.Column(login_database.Integer())
+    token_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('token.id'), unique=True)
+    online_user = login_database.Column(login_database.Boolean())
     dataset_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('dataset.id'))
-    username = login_database.Column(login_database.String(255))  ## Why ?
-    active = login_database.Column(login_database.Boolean())  ## Why ?
-    confirmed_at = login_database.Column(login_database.DateTime())  ## Why ?
-    email = login_database.Column(login_database.String(255), unique=True)
-    ratings = login_database.Column(login_database.String(1024))## Why ?
+    active = login_database.Column(login_database.Boolean())
     roles = login_database.relationship('Role', secondary=roles_users,
-                                        backref=login_database.backref('users', lazy='dynamic'))  ## why ?
+                                        backref=login_database.backref('users', lazy='dynamic'))
+    # username = login_database.Column(login_database.String(255))  ## Why ?
+    # is_active = login_database.Column(login_database.Boolean())  ## Why ?
+
+
+# confirmed_at = login_database.Column(login_database.DateTime())  ## Why ?
+# email = login_database.Column(login_database.String(255), unique=True)
+# ratings = login_database.Column(login_database.String(1024))  ## Why ?
 
 
 class Rating(login_database.Model):
     __tablename__ = 'rating'
     id = login_database.Column(login_database.Integer(), primary_key=True)
     rating = login_database.Column(login_database.Float())
-    item_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('item.id'), unique=True)
-    user_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('user.id'), unique=True)
+    item_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('item.id')) ## can't be unique one item has many ratings (by many users)
+    user_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('user.id')) ## can'be unique one user can leave many ratings (for many items)
     dataset_id = login_database.Column(login_database.Integer, login_database.ForeignKey('dataset.id'))
 
 
@@ -75,7 +86,7 @@ class ReclistItem(login_database.Model):
     number = login_database.Column(login_database.Integer)
     item_id = login_database.Column(login_database.Integer, login_database.ForeignKey('item.id'))
     reclist_id = login_database.Column(login_database.Integer, login_database.ForeignKey('reclist.id'))
-    prediction = login_database.Column(login_database.Integer())
+    prediction = login_database.Column(login_database.Float())
 
 
 class Reclist(login_database.Model):
@@ -90,7 +101,8 @@ class Reclist(login_database.Model):
 class Study_Algorithms(login_database.Model):
     __tablename__ = 'study_algorithms'
     id = login_database.Column(login_database.Integer(), primary_key=True)
-    algorithm_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('algorithm.id'), unique=True)
+    algorithm_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('algorithm.id'),
+                                         unique=True)
     study_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('study.id'), unique=True)
 
 
@@ -115,7 +127,7 @@ class Study(login_database.Model):
     __tablename__ = 'study'
     id = login_database.Column(login_database.Integer(), primary_key=True)
     name = login_database.Column(login_database.String(200), unique=True)
-    description = login_database.Column(login_database.String(200))
+    description = login_database.Column(login_database.String(1024))
     active = login_database.Column(login_database.Integer())
     dataset_id = login_database.Column(login_database.Integer())
     reclist_length = login_database.Column(login_database.Integer())
@@ -125,7 +137,7 @@ class Algorithm(login_database.Model):
     __tablename__ = 'algorithm'
     id = login_database.Column(login_database.Integer(), primary_key=True)
     name = login_database.Column(login_database.String(100), unique=True)
-    description = login_database.Column(login_database.String(200))
+    description = login_database.Column(login_database.String(1024))
 
 
 class Item_Genres(login_database.Model):
@@ -140,13 +152,13 @@ class Token(login_database.Model):
     __tablename__ = 'token'
     id = login_database.Column(login_database.Integer(), primary_key=True)
     name = login_database.Column(login_database.String(40), unique=True)
-    valid = login_database.Column(login_database.Integer())
+    valid = login_database.Column(login_database.Boolean())
 
 
 class Moviegenre(login_database.Model):
     __tablename__ = 'moviegenre'
     id = login_database.Column(login_database.Integer(), primary_key=True)
-    title = login_database.Column(login_database.String(100), unique=True)
+    title = login_database.Column(login_database.String(1024))
 
 
 class Crossvalidation(login_database.Model):
@@ -158,6 +170,7 @@ class Crossvalidation(login_database.Model):
     mae = login_database.Column(login_database.Float())
     fit_time = login_database.Column(login_database.Float())
     test_time = login_database.Column(login_database.Float())
+
 
 # Setup Flask-Security
 ## datastore is required by flask security
