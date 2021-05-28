@@ -1,5 +1,6 @@
 from flask import render_template, Blueprint, request, url_for, flash
 from flask_login import login_required, login_user, logout_user, current_user
+from flask_user import roles_required
 from werkzeug.utils import redirect
 from flask_security.utils import hash_password, verify_password
 from sqlalchemy import desc
@@ -8,20 +9,19 @@ import json
 import pandas as pd
 import os
 
-import json
 
 from utils.select_survey_items import select_movies_for_survey
 from utils.serve_posters import generate_poster_url_dict
 
 main_bp = Blueprint('main', __name__)  # needs to be here
 
-from database.user_model import User, user_datastore, Study, Rating, Item
+from database.user_model import User,  Study, Rating, Item, Crossvalidation, Item_Genres, Study_Algorithms, Algorithm, Dataset
 from application import login_database
 
 
 @main_bp.route('/', methods=['GET', 'POST'])
 def index():
-    print(select_movies_for_survey)
+
     return render_template("home.html")
 
 
@@ -32,13 +32,13 @@ def login():
         print("submitted login form")
         #take data from form
 
-        user_email = request.form.get('email')
+        token_nr = request.form.get('token_number')
         user_username = request.form.get('username')
         user_password = request.form.get('password')
 
-        u = User.query.filter_by(account=user_email).first()
+        u = User.query.filter_by(token_id=token_nr).first()
         ## check if user u already exists
-        if u and verify_password(user_password, password_hash=u.password):
+        if u and u.password == user_password:
             login_user(u)
             flash('Successfully logged in!')
             return redirect(url_for('main.survey'))
@@ -49,7 +49,7 @@ def login():
 
 
 @main_bp.route('/survey', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def survey():
     if request.method == "POST":
         if request.form.get('formtype') == "2":  ## form is submitting movie ratings.
@@ -97,7 +97,7 @@ def survey():
 
 
 @main_bp.route('/bye')
-@login_required
+#@login_required
 def bye():
     logout_user()
     return render_template("bye.html")
@@ -125,57 +125,58 @@ def register():
             flash("A user with this email already exists. please log in.")
             return redirect('login')
         else:
-            user_datastore.create_user(account=user_email, username=user_name, password=user_password)
+            login_database.session.add(User(account=user_email, name=user_name, password=user_password))
             login_database.session.commit()
 
     return render_template("register.html")
 
 
 @main_bp.route('/admin', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def admin():
-    users = User.query.all()
-    studies = Study.query.all()
-    ratings = login_database.session.query(Rating).all()
-    for study in studies:
-        print(study.name)
-    if request.method == 'POST':
-        if request.form.get('db-action') == "Clear Database":
-            login_database.session.query(Item).delete()
-            login_database.session.query(Rating).delete()
-            login_database.session.commit()
-        if request.form.get('db-action') == "Populate Database":
-            ##open the files
-            ratings_file = os.path.realpath('./database/datasets/movielens_small/ratings.csv')
-            movies_file = os.path.realpath('./database/datasets/movielens_small/movies.csv')
-            links_file = os.path.realpath('./database/datasets/movielens_small/links.csv')
-            ##load as dataframes
-            movies_df = pd.read_csv(movies_file, dtype='str')
-            links_df = pd.read_csv(links_file, dtype='str')
-            ratings_df = pd.read_csv(ratings_file, dtype='str')
-
-            ##user names are numbers going up from 1 to max of the column add them to db
-            for u in range(ratings_df['userId'].astype('int').max() + 1):
-                print("user no" + str(u))
-                ## add users to database
-                user_datastore.create_user(id=u, user_id=u, account=str(u) + ".gmail.com", token_id=u, online_user=0,
-                                           dataset_id=1)
-
-            for row in movies_df.itertuples():  ## add all movies to db
-                imdb_id = 'tt' + links_df.loc[links_df['movieId'] == row.movieId]['imdbId'].to_string(index=False)
-                login_database.session.add(
-                    Item(id=row.movieId, name=row.title, imdb_id=imdb_id, dataset_id=1, poster_url="empty"))
+    admin_tokenid= login_database.session.query(User).filter_by(name='admin').first().token_id
+    if current_user.token_id == admin_tokenid:
+        if request.method == 'POST':
+            if request.form.get('db-action') == "Clear Database":
+                login_database.session.query(Item).delete()
+                login_database.session.query(Rating).delete()
                 login_database.session.commit()
-            print(ratings_df.head())
-            for row in ratings_df.itertuples():  ## add all the ratings to the db
-                login_database.session.add(
-                    Rating(rating=row.rating, dataset_id=5, item_id=row.movieId, user_id=row.userId))
+            if request.form.get('db-action') == "Populate Database":
+                ##open the files
+                ratings_file = os.path.realpath('./database/datasets/movielens_small/ratings.csv')
+                movies_file = os.path.realpath('./database/datasets/movielens_small/movies.csv')
+                links_file = os.path.realpath('./database/datasets/movielens_small/links.csv')
+                ##load as dataframes
+                movies_df = pd.read_csv(movies_file, dtype='str')
+                links_df = pd.read_csv(links_file, dtype='str')
+                ratings_df = pd.read_csv(ratings_file, dtype='str')
+
+                ##user names are numbers going up from 1 to max of the column add them to db
+                for u in range(ratings_df['userId'].astype('int').max() + 1):
+                    print("user no" + str(u))
+                    ## add users to database
+                    login_database.session.add(
+                        User(id=u, user_id=u, account=str(u) + ".gmail.com", token_id=u, online_user=0,
+                             dataset_id=1))
+
+                for row in movies_df.itertuples():  ## add all movies to db
+                    imdb_id = 'tt' + links_df.loc[links_df['movieId'] == row.movieId]['imdbId'].to_string(index=False)
+                    login_database.session.add(
+                        Item(id=row.movieId, name=row.title, imdb_id=imdb_id, dataset_id=1, poster_url="empty"))
+                    login_database.session.commit()
+                print(ratings_df.head())
+                for row in ratings_df.itertuples():  ## add all the ratings to the db
+                    login_database.session.add(
+                        Rating(rating=row.rating, dataset_id=5, item_id=row.movieId, user_id=row.userId))
+                    login_database.session.commit()
+                # survey_name = request.form.get('studies')
+                survey_name = request.form.get('survey-name')
+                login_database.session.add(Study(description="", name=survey_name, dataset_id=1))
                 login_database.session.commit()
-            # survey_name = request.form.get('studies')
-            survey_name = request.form.get('survey-name')
-            login_database.session.add(Study(description="", name=survey_name, dataset_id=1))
-            login_database.session.commit()
-    return render_template("admin.html")
+        return render_template("admin.html")
+    return render_template('forbidden.html')
+
+
 
 
 @main_bp.route('/recommendations', methods=['GET', 'POST'])
