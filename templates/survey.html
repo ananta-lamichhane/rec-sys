@@ -19,35 +19,35 @@
     Click "Done" to finish the survey and get your recommendations.
 </p>
 
-<a href="{{url_for('main.register')}}"><button>Get recommendations</button></a>
-<!--form class="done-form" id="done-form" method="post" action="{{url_for('main.register')}}">
+<!---a href="{{url_for('main.register')}}"><button>Get recommendations</button></a>
+<form class="done-form" id="done-form" method="post" action="{{url_for('main.register')}}">
 <a href="{{url_for('main.recommend')}}"><button>Get recommendations</button></a>
 <form class="done-form" id="done-form" method="post" action="{{url_for('main.recommend')}}">
     <input type="hidden" name="formtype" value="1">
     <input type="submit" class="done-button" name="done" id="done-button" value="Done">
-</form-->
+</form>
 <form class="reset-form" id="reset-form" method="get" action="">
     <input type="hidden" name="formtype" value="3">
     <input type="submit" class="done-button" name="reset" id="reset-button" value="Reset My Ratings">
-</form>
+</form-->
 
 <div class="poster-and-rating">
     <ul class="posterrow">
-    {% for id, val in poster_urls.items() %}
         <li class="column">
-            <p>{{val['title']}}({{val['year']}})</p>
-            <img src="{{val['poster']}}" class="posters">
-            <form class="survey-form" id="{{id}}" action="" method="post">
+            <p id="title-and-year">{{poster_url['title']}}({{poster_url['year']}})</p>
+            <img src="{{poster_url['poster']}}" class="poster" id="poster">
+            <form class="survey-form" id="slider-form" action="" method="post">
             <div class="rating-slider">
-                    <input type="range" name="rating" min="0" max="5" step="0.5" value="2.5" class="slider" id="rating{{id}}">
-                <input type="checkbox" name="no-rating" value="False" id="dontknow{{id}}">
-                <label for="dontknow{{id}}">No idea</label>
+                    <input type="range" name="rating" min="0" max="5" step="0.5" value="2.5" class="slider" id="rating-slider">
+                <input type="checkbox" name="no-rating" value="False" id="poster-checkbox">
+                <label for="poster-checkbox">No idea</label>
                 <input type="hidden" name="formtype" value="2">
-                <input type="submit" class="submit-button" name="submit-rating" id="submit{{id}}" value="Submit">
+                <input type="hidden" name="imdb_id" id="imdbid" value="{{poster_url['imdb_id']}}">
+                <input type="submit" class="submit-button" name="submit-rating" id="submit-button" value="Submit">
             </div>
             </form>
         </li>
-    {% endfor %}
+
 
 
 
