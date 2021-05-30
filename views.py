@@ -3,7 +3,7 @@ from flask_login import login_required, login_user, logout_user, current_user
 from flask_user import roles_required
 from werkzeug.utils import redirect
 from flask_security.utils import hash_password, verify_password
-from sqlalchemy import desc
+from sqlalchemy import desc, func, asc
 
 import json
 import pandas as pd
@@ -11,17 +11,18 @@ import os
 
 
 from utils.select_survey_items import select_movies_for_survey
-from utils.serve_posters import generate_poster_url_dict
+from utils.serve_posters import generate_poster_url_dict, load_next_movie
 
 main_bp = Blueprint('main', __name__)  # needs to be here
 
-from database.user_model import User,  Study, Rating, Item, Crossvalidation, Item_Genres, Study_Algorithms, Algorithm, Dataset
+from database.user_model import User,  Study, Rating, Item, Crossvalidation, Item_Genres, Study_Algorithms, Algorithm, Dataset, user_datastore
 from application import login_database
 
 
 @main_bp.route('/', methods=['GET', 'POST'])
 def index():
-
+    login_database.session.query(Rating).filter(Rating.user_id == current_user.id).delete()
+    login_database.session.commit()
     return render_template("home.html")
 
 
@@ -49,21 +50,41 @@ def login():
 
 
 @main_bp.route('/survey', methods=['GET', 'POST'])
-#@login_required
+@login_required
 def survey():
+    no_of_questions=10 ## number of survey questionnaires, we can query it from database later.
     if request.method == "POST":
-        if request.form.get('formtype') == "2":  ## form is submitting movie ratings.
+        if request.form.get('formtype') == "2" and int(request.form.get('next_item')) < no_of_questions:  ## form is submitting movie ratings.
             imdb_id = request.form.get('imdb_id')
+            next_item = request.form.get('next_item')
+            print("next item "+ str(next_item))
+           # print("imdb id :  " + imdb_id)
             rating = request.form.get('rating')
-            ##search items for matching imdbid
-            #TODO:differentiate between two cases : add new rating vs update existing rating
             itemid = login_database.session.query(Item).filter_by(imdb_id=imdb_id).first().id
-            login_database.session.add(Rating(rating=rating, dataset_id=1, item_id=itemid, user_id=current_user.id))
-            login_database.session.commit()  ## commit to db
+            if login_database.session.query(Rating).filter_by(item_id=itemid).first():
+                login_database.session.query(Rating).filter_by(item_id=itemid).first().rating=rating
+                login_database.session.commit()  ## commit to db
+            else:
+                login_database.session.add(Rating(rating=rating, dataset_id=1, item_id=itemid, user_id=current_user.id))
+                login_database.session.commit()  ## commit to db
             # we can query currently saved rating to current user from database.
             current_ratings = login_database.session.query(Rating).filter_by(user_id=current_user.id)
             for r in current_ratings:
                 print("rating: " + str(r.rating) + " movieId: " + str(r.item_id))
+
+
+
+            currnt_movieId = login_database.session.query(Item).filter_by(imdb_id=imdb_id).first().id
+            next_movieId  = login_database.session.query(Item).order_by(Item.id.asc()).filter(Item.id > currnt_movieId).first().id
+
+            print("current movie id : " + str(currnt_movieId) + "next imdb id : " + str(next_movieId))
+            next_imdbId = login_database.session.query(Item).filter_by(id=next_movieId).first().imdb_id
+            poster_url = generate_poster_url_dict(next_imdbId)
+
+            print("current imdbid : " + imdb_id + "next imdb id : " + next_imdbId)
+            return poster_url # return the json data as it is so ajax can handle it instead
+
+
         if request.form.get('formtype') == "1":  ## TODO: handle what to do when done button is clicked
             redirect('/recommendations', code=302)
         if request.form.get('formtype') == "3":  ## debugging database addition errors.
@@ -77,10 +98,7 @@ def survey():
             print(current_user.email)
             print(current_user.ratings)
         if request.form.get('formtype') == "3": ## debugging database addition errors.
-            current_user.ratings = '{}'
-            login_database.session.add(Rating(rating=rating, dataset_id=23, item_id=45678, user_id=current_user.id))
-            login_database.session.commit() ## commit to db
-            print("current rating str: " + str(current_user.ratings))
+            print("add online users")
         if request.form.get('formtype') == "1": ## TODO: handle what to do when done button is clicked
             redirect('/recommendations', code=302)
         if request.form.get('formtype') == "3": ## debugging database addition errors.
@@ -90,10 +108,11 @@ def survey():
 
     # test_ids = select_movies_for_survey()
     ##TODO: make sure the list of movies in the database, handle error otherwise
-    test_ids = ['tt0103859', 'tt0110443', 'tt0089489', 'tt0047677', 'tt0340163', 'tt0112573', 'tt0130445', 'tt0089459',
-                'tt0047577', 'tt0340273']
-    poster_urls = generate_poster_url_dict(test_ids)
-    return render_template("survey.html", poster_urls=poster_urls)
+    test_id = 'tt0103859'
+    poster_url = generate_poster_url_dict(test_id)
+    #next_movie = movieId+1
+    #next_data =
+    return render_template("survey.html", poster_url=poster_url)
 
 
 @main_bp.route('/bye')
@@ -137,10 +156,12 @@ def admin():
     admin_tokenid= login_database.session.query(User).filter_by(name='admin').first().token_id
     if current_user.token_id == admin_tokenid:
         if request.method == 'POST':
-            if request.form.get('db-action') == "Clear Database":
-                login_database.session.query(Item).delete()
-                login_database.session.query(Rating).delete()
-                login_database.session.commit()
+            if request.form.get('db-action') == "Add Users":
+                last_token_id = login_database.session.query(func.max(User.token_id))
+                print("add users")
+                for u in range(2, 52):
+                    user_datastore.create_user(token_id=u, name='user' + str(u), password='password', online_user=True)
+                    login_database.session.commit()
             if request.form.get('db-action') == "Populate Database":
                 ##open the files
                 ratings_file = os.path.realpath('./database/datasets/movielens_small/ratings.csv')
@@ -150,15 +171,12 @@ def admin():
                 movies_df = pd.read_csv(movies_file, dtype='str')
                 links_df = pd.read_csv(links_file, dtype='str')
                 ratings_df = pd.read_csv(ratings_file, dtype='str')
-
                 ##user names are numbers going up from 1 to max of the column add them to db
+
                 for u in range(ratings_df['userId'].astype('int').max() + 1):
                     print("user no" + str(u))
                     ## add users to database
-                    login_database.session.add(
-                        User(id=u, user_id=u, account=str(u) + ".gmail.com", token_id=u, online_user=0,
-                             dataset_id=1))
-
+                    user_datastore.create_user(online_user=False, dataset_id=1)
                 for row in movies_df.itertuples():  ## add all movies to db
                     imdb_id = 'tt' + links_df.loc[links_df['movieId'] == row.movieId]['imdbId'].to_string(index=False)
                     login_database.session.add(
