@@ -43,11 +43,11 @@ class Role(login_database.Model, RoleMixin):
 class User(login_database.Model, UserMixin):
     __tablename__ = 'user'
     id = login_database.Column(login_database.Integer(), primary_key=True)
-    user_id = login_database.Column(login_database.Integer(), unique=True)
-    account = login_database.Column(login_database.String(255), unique=True)
+    #user_id = login_database.Column(login_database.Integer(), unique=True)
+    #account = login_database.Column(login_database.String(255), unique=True)
     name = login_database.Column(login_database.String(200))
     password = login_database.Column(login_database.String(1024))
-    token_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('token.id'), unique=True)
+    token_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('token.id'))
     online_user = login_database.Column(login_database.Boolean())
     dataset_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('dataset.id'))
     active = login_database.Column(login_database.Boolean())
