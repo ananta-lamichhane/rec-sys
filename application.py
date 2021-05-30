@@ -29,10 +29,8 @@ def create_app(): #config_file='flask_config.py'):
         login_database.create_all()
         login_database.session.commit()
         login_manager.init_app(app)
-        if not login_database.session.query(User).filter_by(name='admin').first(): ## create admin and 50 users for the first time
-            user_datastore.create_user(token_id=9999, name='admin', password='admin', online_user=True)
-            for u in range(2,52):
-                user_datastore.create_user(token_id=u, name='user'+str(u), password='password', online_user=True)
+        if not login_database.session.query(User).filter_by(name='admin').first(): ## create admin during start
+            user_datastore.create_user(id=999999,token_id=9999, name='admin', password='admin', online_user=True)
             login_database.session.commit()
 
     @login_manager.user_loader
