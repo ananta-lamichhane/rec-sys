@@ -1,10 +1,6 @@
 $(document).ready(function(){
 
-<<<<<<< HEAD
-    $('#done-button').on('click', function(event){ // signals the survey is done.
-=======
    /* $('#done-button').on('click', function(event){ // signals the survey is done.
->>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
         $.ajax({
          data: {
             done: 1,
@@ -14,15 +10,13 @@ $(document).ready(function(){
         type: 'post'
         });
         event.preventDefault();
-
-<<<<<<< HEAD
     });
-=======
-    });*/
->>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
 
-        $('#reset-button').on('click', function(event){ // signals the survey is done.
-        $.ajax({
+    });*/
+
+
+    $('#add-user-submit').on('click', function(event){ // signals the survey is done.
+      $.ajax({
          data: {
             done: 1,
             formtype: 3
@@ -34,29 +28,36 @@ $(document).ready(function(){
 
     });
 
-
+     var item_no=0 //keep track of how many elements are already displayed reset of each complete reload of the page.
     $('form').on('submit', function(event){ //sends POST request without refreshing the page.
-        var imdb_id= $(this).attr('id');
+    event.preventDefault();
 
-        //var imdb_id = $('#imdb_id').val();
-        console.log(imdb_id);
-        var rating =  $('#rating'+imdb_id).val();
-        console.log(rating);
+        var rating =  $('#rating-slider').val(); // extract values from the form data
+        var imdb_id = $('#imdbid').val()
+
 
         $.ajax({
-            data: {
-                rating: rating,
-                imdb_id: imdb_id,
-                formtype: 2
+            data: { //send back to backend (flask)
+                rating: rating, // rating from the rating slider
+                imdb_id: imdb_id, //current imdb id so that we can calculate next
+                formtype: 2, //we want to distinguish between submission of ratings and other forms
+                next_item: item_no //keep track of how many items are already displayed
             },
             url: '/survey',
             type: 'POST'
         })
-        .done(function(data){
-
+        .done(function(data){ //when post request was successful do the following
+         item_no ++;
+         if(item_no >= 10){ // reload to recommendations after 10 survey questions are asked.
+            window.location = '/recommendations';
+         }
+         $('#poster').attr('src', data['poster']); //update src attribute of the image with new URI
+         $('#imdbid').attr('value', data['imdb_id']); //update IMDB ID of the movie
+         var title_and_year = '' + data['title'] + '' + '(' + data['year'] +')';
+         $('#title-and-year').text(title_and_year); // update title and year which appears over the movie poster
         });
 
-        event.preventDefault(); //prevent form being submitted automatically after pressing submit
+      //prevent form being submitted automatically after pressing submit
     });
 
 });
