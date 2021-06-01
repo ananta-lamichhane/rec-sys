@@ -28,12 +28,15 @@ $(document).ready(function(){
 
     });
 
-     var item_no=0 //keep track of how many elements are already displayed reset of each complete reload of the page.
+     var item_no=1 //keep track of how many elements are already displayed reset of each complete reload of the page.
     $('form').on('submit', function(event){ //sends POST request without refreshing the page.
     event.preventDefault();
 
         var rating =  $('#rating-slider').val(); // extract values from the form data
         var imdb_id = $('#imdbid').val()
+        if(item_no >= 10){ // reload to recommendations after 10 survey questions are asked.
+            window.location = '/recommendations';
+         }
 
 
         $.ajax({
@@ -48,9 +51,7 @@ $(document).ready(function(){
         })
         .done(function(data){ //when post request was successful do the following
          item_no ++;
-         if(item_no >= 10){ // reload to recommendations after 10 survey questions are asked.
-            window.location = '/recommendations';
-         }
+
          $('#poster').attr('src', data['poster']); //update src attribute of the image with new URI
          $('#imdbid').attr('value', data['imdb_id']); //update IMDB ID of the movie
          var title_and_year = '' + data['title'] + '' + '(' + data['year'] +')';
