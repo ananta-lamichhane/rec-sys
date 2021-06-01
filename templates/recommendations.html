@@ -6,10 +6,10 @@
 {% block content %}
 <div class="poster-and-rating">
     <ul class="posterrow">
-    {% for id, val in poster_urls.items() %}
+    {% for item in poster_urls %}
         <li class="column">
-            <p>{{val['title']}}({{val['year']}})</p>
-            <img src="{{val['poster']}}" class="posters">
+            <p>{{item['title']}}({{item['year']}})</p>
+            <img src="{{item['poster']}}" class="posters">
             <!--form class="survey-form" id="{{id}}" action="" method="post">
             <div class="rating-slider">
                     <input type="range" name="rating" min="0" max="5" step="0.5" value="2.5" class="slider" id="rating{{id}}">
@@ -27,7 +27,8 @@
 
         <form class="recom-rating" id="recommendation-rating" action="" method="post">
             <div class="rating-slider">
-                <input type="range" name="rating" min="0" max="10" step="0.5" value="5" class="slider" id="rating{{id}}">
+                <input type="range" name="rating" min="0" max="10" step="0.5" value="5" class="slider" id="slider-recom-rating" oninput="this.nextElementSibling.value = this.value">
+                <output>2.5</output>
                 <input type="hidden" name="formtype" value="2">
                 <input type="submit" class="submit-button" name="submit-rating" id="submit{{id}}" value="Submit">
             </div>
