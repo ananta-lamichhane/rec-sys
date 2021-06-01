@@ -209,7 +209,7 @@ def admin():
 
 
 
-                for row in reclistdf_svd.itertuples():  # each row corresponds to userid,recom1,recom2,recom3......,recom10
+                for row in reclistdf_knn.itertuples():  # each row corresponds to userid,recom1,recom2,recom3......,recom10
                     current_reclist = login_database.session.query(Reclist).filter_by(user_id=int(row[0]),
                                                                                       algorithm_id=1).first()
                     if not current_reclist:
@@ -239,35 +239,35 @@ def admin():
                             login_database.session.commit()
                     print("________________________________________________L end")
 
-                # for row in reclistdf_knn.itertuples():  # each row corresponds to userid,recom1,recom2,recom3......,recom10
-                #     current_reclist = login_database.session.query(Reclist).filter_by(user_id=int(row[0]),
-                #                                                                       algorithm_id=1).first()
-                #     if not current_reclist:
-                #         login_database.session.add(
-                #             Reclist(user_id=int(row[0]), algorithm_id=2))  # create a reclist for each row of recoms
-                #         login_database.session.commit()
-                #         current_reclist = login_database.session.query(Reclist).filter_by(user_id=int(row[0]),
-                #                                                                           algorithm_id=1).first()
-                #     print("________________________________________________L start")
-                #     for item in row[2:]:  # skip the first item on row, i.e. the user id.
-                #         # print(item)
-                #         current_reclistitem = login_database.session.query(ReclistItem).filter_by(item_id=int(item),
-                #                                                                                   reclist_id=current_reclist.id).first()
-                #         #  print("current_reclistitem = " + str(current_reclistitem))
-                #         if not current_reclistitem:
-                #             login_database.session.add(ReclistItem(item_id=int(item), reclist_id=current_reclist.id))
-                #             login_database.session.commit()
-                #
-                #         # print("-")
-                #         #  login_database.session.add(ReclistItem(item_id=int(item)))
-                #         #   login_database.session.commit()
-                #         else:
-                #             # print("item")
-                #
-                #             # print("add reclistid=userid to the reclistitem")
-                #             current_reclistitem.reclist_id = current_reclist.id
-                #             login_database.session.commit()
-                #     print("________________________________________________L end")
+                for row in reclistdf_svd.itertuples():  # each row corresponds to userid,recom1,recom2,recom3......,recom10
+                    current_reclist = login_database.session.query(Reclist).filter_by(user_id=int(row[0]),
+                                                                                      algorithm_id=2).first()
+                    if not current_reclist:
+                        login_database.session.add(
+                            Reclist(user_id=int(row[0]), algorithm_id=2))  # create a reclist for each row of recoms
+                        login_database.session.commit()
+                        current_reclist = login_database.session.query(Reclist).filter_by(user_id=int(row[0]),
+                                                                                          algorithm_id=2).first()
+                    print("________________________________________________L start")
+                    for item in row[2:]:  # skip the first item on row, i.e. the user id.
+                        # print(item)
+                        current_reclistitem = login_database.session.query(ReclistItem).filter_by(item_id=int(item),
+                                                                                                  reclist_id=current_reclist.id).first()
+                        #  print("current_reclistitem = " + str(current_reclistitem))
+                        if not current_reclistitem:
+                            login_database.session.add(ReclistItem(item_id=int(item), reclist_id=current_reclist.id))
+                            login_database.session.commit()
+
+                        # print("-")
+                        #  login_database.session.add(ReclistItem(item_id=int(item)))
+                        #   login_database.session.commit()
+                        else:
+                            # print("item")
+
+                            # print("add reclistid=userid to the reclistitem")
+                            current_reclistitem.reclist_id = current_reclist.id
+                            login_database.session.commit()
+                    print("________________________________________________L end")
 
 
         return render_template("admin.html")
@@ -279,75 +279,47 @@ def admin():
 @main_bp.route('/recommendations', methods=['GET', 'POST'])
 @login_required
 def recommend():
-    # recoms_file_svd = os.path.realpath('./database/datasets/movielens_small/recom_svd_ds1.csv')
-    # reclistitemdf = pd.read_csv(recoms_file_svd, dtype='str')
-    # all_movies = Item.query.all()
-    # for movie in all_movies: ##add a reclistitem for all movies in db
-    #     login_database.session.add(ReclistItem(id=movie.id, item_id=movie.id))
-    #     login_database.session.commit()
-    # for row in reclistitemdf.itertuples():#each row corresponds to userid,recom1,recom2,recom3......,recom10
-    #     current_reclist = login_database.session.query(Reclist).filter_by(user_id=int(row[0])).first()
-    #     if not current_reclist:
-    #        login_database.session.add(Reclist(user_id= int(row[0]))) # create a reclist for each row of recoms
-    #        login_database.session.commit()
-    #     print("________________________________________________L start")
-    #     for item in row[2:]: #skip the first item on row, i.e. the user id.
-    #         #print(item)
-    #         current_reclistitem = login_database.session.query(ReclistItem).filter_by(item_id=int(item), reclist_id=int(row[0])).first()
-    #       #  print("current_reclistitem = " + str(current_reclistitem))
-    #         if not current_reclistitem:
-    #             login_database.session.add(ReclistItem(item_id=int(item), reclist_id=int(row[0])))
-    #             login_database.session.commit()
-    #            # print("-")
-    #           #  login_database.session.add(ReclistItem(item_id=int(item)))
-    #          #   login_database.session.commit()
-    #         else:
-    #             #print("item")
-    #
-    #            # print("add reclistid=userid to the reclistitem")
-    #             current_reclistitem.reclist_id = int(row[0])
-    #             login_database.session.commit()
-    #     print("________________________________________________L end")
 
-    # print("recommendations from db--------------------------")
-   # reclist_for_400 = login_database.session.query(Reclist).filter_by(user_id=current_user.id+200).first().id
-   #print("this what" + str(reclist_for_400))
-    #reclistitems = login_database.session.query(ReclistItem).filter_by(reclist_id=(int(current_user.token_id) + 401))
-    reclistitems = login_database.session.query(ReclistItem).filter_by(reclist_id=200)
-    #for rec in login_database.session.query(ReclistItem):
-       # print("id = "+ str(rec.id))
-   # reclists = login_database.session.query
-
-    if request.method == 'POST':
+    if request.method == 'POST': # if reating is submited
         serendipity_rating = float(request.form.get('rating'))
+        reclist_id = int(request.form.get('reclist_id'))
 
         #when an item is selected for recommendation, a reclistitem must be created with it
         # many reclistitems will be added a reclist and will be populated with userid and algo id
         ## after submit form, the rating of recommendation should populate an evaluation with the values.
-        current_evaluation = login_database.session.query(Evaluation).filter_by(user_id=current_user.id).first()
+        current_evaluation = login_database.session.query(Evaluation).filter_by(reclist_id=reclist_id).first()
         if current_evaluation:
             current_evaluation.serendipity= serendipity_rating
             login_database.session.commit()
         else:
-            login_database.session.add(Evaluation(serendipity=serendipity_rating, user_id=current_user.id))
+            login_database.session.add(Evaluation(serendipity=serendipity_rating, reclist_id=reclist_id))
             login_database.session.commit()
 
-        print("evaluation = " + str(login_database.session.query(Evaluation).filter_by(user_id=current_user.id).first().serendipity))
+        print("evaluation of " + str(reclist_id) + "= " + str(login_database.session.query(Evaluation).filter_by(reclist_id=reclist_id).first().serendipity))
+
+    #query database for recommendation lists for a user belonging to a particular user
+    reclist_svd = login_database.session.query(Reclist).filter_by(user_id=400, algorithm_id=2).first()
+    reclist_knn = login_database.session.query(Reclist).filter_by(user_id=400, algorithm_id=1).first()
+    print("reclist knn: " + str(reclist_knn.id) + " reclist svd: "+ str(reclist_svd.id))
+
+    #find reclistitems (movies) that belong to each recommendation groups
+    reclistitems_svd = login_database.session.query(ReclistItem).filter_by(reclist_id=reclist_svd.id)
+    reclistitems_knn = login_database.session.query(ReclistItem).filter_by(reclist_id=reclist_knn.id)
 
     ## recommendations = highest rated movies by the user most similar to the current user, e.g. user no 483
-    all_data = []
-    movie_list = []
-    for recitem in reclistitems:
-        print("itemid "+ str(recitem.item_id))
-        #reclistitems = login_database.session.query(ReclistItem).filter_by(
-            #reclist_id=(int(current_user.token_id) + 401))
-        #for recitem in reclistitems:
-            #print(recitem.item_id)
+    all_data_svd = []
+    all_data_knn = []
+    for recitem in reclistitems_knn:
         imdb_no = login_database.session.query(Item).filter_by(id=recitem.item_id).first().imdb_id
-        #movie_list.append(imdb_no)
-       # print(str(recoms[i].rating) + "  " + str(imdb_no))
-        if len(all_data) ==5:
+        if len(all_data_knn) ==5:
             break
         movie_data = generate_poster_url_dict(imdb_no)
-        all_data.append(movie_data)
-    return render_template('recommendations.html', poster_urls=all_data)
+        all_data_knn.append(movie_data)
+    for recitem in reclistitems_svd:
+        imdb_no = login_database.session.query(Item).filter_by(id=recitem.item_id).first().imdb_id
+        if len(all_data_svd) ==5:
+            break
+        movie_data_svd = generate_poster_url_dict(imdb_no)
+        all_data_svd.append(movie_data_svd)
+    #pass two lists with movie information to html, need to get recids back from html too
+    return render_template('recommendations.html', poster_urls1=all_data_knn, poster_urls2=all_data_svd, reclist_id1=reclist_svd.id, reclist_id2=reclist_knn.id)
