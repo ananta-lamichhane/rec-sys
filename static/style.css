@@ -1,0 +1,158 @@
+@import url(https://fonts.googleapis.com/css2?family=Mulish&display=swap");
+
+body {
+    background: #b3d8e8;
+    padding: 0;
+    margin: 0;
+}
+
+.navigation {
+    margin: 0;
+    padding: 0;
+}
+
+
+nav {
+    background: #e6f7e8;
+    height: 70px;
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+
+
+/* warning box its cross button and action on hover*/
+.warning-box {
+    background-color: red;
+    padding: 15px;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.closebtn {
+    color: white;
+    float: right;
+    font-size: 25px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+closebtn.hover {
+    color: black;
+}
+
+/*login and registration forms*/
+h3 {
+    text-align: center;
+    padding: 20px
+}
+
+
+/*column of the survey film posters, use 100/no of cols perctange for width*/
+.posterrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: stretch;
+    justify-content: center;
+
+}
+
+.column {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    list-style-type: none;
+}
+
+.column-img img {
+    max-height: 500px;
+    min-width: 300px;
+    object-fit: contain;
+    vertical-align: bottom;
+}
+
+
+
+
+.slidecontainer {
+    width: 100%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    background: #fff;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #04AA6D;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #04AA6D;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+
+
+
+/*ratings slider in survey page*/
+/*.rating-slider {
+    margin-top : 10px;
+    margin-bottom: 10px;
+    width: 300px;
+}
+.slider {
+    -webkit-appearance: none;
+    border-radius: 5px;
+    width: 300px;
+    height: 20px;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: 0.2s
+    transition: 0.2s
+}
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius:50%;
+    cursor: pointer;
+}
+*/

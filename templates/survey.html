@@ -1,16 +1,11 @@
 {% extends 'base.html' %}
-
-
 {% block title %}
-    Survey
+Survey
 {% endblock %}
-
 {% block scripts %}
-<script src="{{url_for('static', filename='handle_survey.js')}}"></script>
+<!-- <script src="{{url_for('static', filename='handle_survey.js')}}"></script> -->
 {% endblock %}
-
 {% set active_page = 'survey'%}
-
 {% block content %}
 <p>
     Welcome to the survey portal.<br>
@@ -18,45 +13,42 @@
     Check "No idea" if you haven't yet seen the movie. <br>
     Click "Done" to finish the survey and get your recommendations.
 </p>
-<<<<<<< HEAD
-<a href="{{url_for('main.register')}}"><button>Get recommendations</button></a>
-<!--form class="done-form" id="done-form" method="post" action="{{url_for('main.register')}}">
-=======
-<a href="{{url_for('main.recommend')}}"><button>Get recommendations</button></a>
-<!--form class="done-form" id="done-form" method="post" action="{{url_for('main.recommend')}}">
->>>>>>> 0edd2ec24e59cc1e475a18d2264926289737cbae
+<form class="done-form" id="done-form" method="post" action="">
     <input type="hidden" name="formtype" value="1">
     <input type="submit" class="done-button" name="done" id="done-button" value="Done">
-</form-->
-<form class="reset-form" id="reset-form" method="get" action="">
+</form>
+<form class="reset-form" id="reset-form" method="post" action="">
     <input type="hidden" name="formtype" value="3">
     <input type="submit" class="done-button" name="reset" id="reset-button" value="Reset My Ratings">
 </form>
-
 <div class="poster-and-rating">
-    <ul class="posterrow">
-    {% for id, val in poster_urls.items() %}
-        <li class="column">
-            <p>{{val['title']}}({{val['year']}})</p>
-            <img src="{{val['poster']}}" class="posters">
-            <form class="survey-form" id="{{id}}" action="" method="post">
-            <div class="rating-slider">
-                    <input type="range" name="rating" min="0" max="5" step="0.5" value="2.5" class="slider" id="rating{{id}}">
-                <input type="checkbox" name="no-rating" value="False" id="dontknow{{id}}">
-                <label for="dontknow{{id}}">No idea</label>
-                <input type="hidden" name="formtype" value="2">
-                <input type="submit" class="submit-button" name="submit-rating" id="submit{{id}}" value="Submit">
+    <div class="posterrow">
+        {% for item in poster_urls %}
+        <div class="column">
+            <div class="column-img">
+                <img src="{{item.poster_url}}" class="posters">
             </div>
+            <form class="survey-form" method="post">
+                <input type="hidden" name="item_id" value="{{item.id}}">
+                <div class="slidecontainer">
+                    <input type="range" name="rating" min="0" max="5" step="0.5" value="2.5" class="slider" id="myRange">
+                    <p id="progress"></p>
+                </div>
+                <input type="checkbox" name="no_rating" id="dontknow{{item.id}}">
+                <label for="dontknow{{item.id}}">No idea</label>
+                <input type="hidden" name="formtype" value="2">
+                <input type="submit" class="submit-button">
             </form>
-        </li>
-    {% endfor %}
-
-
-
-</ul>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+<script>
+var slider = document.getElementById("myRange");
+var output = document.getElementById("progress");
+output.innerHTML = slider.value;
 
-
-
-
-{% endblock content %}
+slider.oninput = function() {
+    output.innerHTML = this.value;
+}
+</script>
