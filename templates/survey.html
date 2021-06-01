@@ -19,17 +19,6 @@
     Click "Done" to finish the survey and get your recommendations.
 </p>
 
-<!---a href="{{url_for('main.register')}}"><button>Get recommendations</button></a>
-<form class="done-form" id="done-form" method="post" action="{{url_for('main.register')}}">
-<a href="{{url_for('main.recommend')}}"><button>Get recommendations</button></a>
-<form class="done-form" id="done-form" method="post" action="{{url_for('main.recommend')}}">
-    <input type="hidden" name="formtype" value="1">
-    <input type="submit" class="done-button" name="done" id="done-button" value="Done">
-</form>
-<form class="reset-form" id="reset-form" method="get" action="">
-    <input type="hidden" name="formtype" value="3">
-    <input type="submit" class="done-button" name="reset" id="reset-button" value="Reset My Ratings">
-</form-->
 
 <div class="poster-and-rating">
     <ul class="posterrow">
@@ -38,7 +27,8 @@
             <img src="{{poster_url['poster']}}" class="poster" id="poster">
             <form class="survey-form" id="slider-form" action="" method="post">
             <div class="rating-slider">
-                    <input type="range" name="rating" min="0" max="5" step="0.5" value="2.5" class="slider" id="rating-slider">
+                <input type="range" name="rating" min="0" max="5" step="0.5" value="2.5" class="slider" id="rating-slider" oninput="this.nextElementSibling.value = this.value">
+                <output>2.5</output>
                 <input type="checkbox" name="no-rating" value="False" id="poster-checkbox">
                 <label for="poster-checkbox">No idea</label>
                 <input type="hidden" name="formtype" value="2">
