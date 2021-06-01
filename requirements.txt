@@ -22,7 +22,7 @@ itsdangerous==1.1.0
 Jinja2==2.11.3
 joblib==1.0.1
 MarkupSafe==1.1.1
-numpy==1.19.5
+numpy==1.20.2
 omdb==0.10.1
 packaging==20.9
 pandas==1.2.4

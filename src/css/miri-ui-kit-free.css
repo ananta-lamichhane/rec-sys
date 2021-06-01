@@ -8526,7 +8526,7 @@ footer {
 
 .login-page {
   background-color: #00031d;
-  background-image: url("../../static/login-bg.jpg");
+  background-image: url("../images/login-bg.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top;

@@ -7,9 +7,9 @@ class Configurations:
     FLASK_APP ='run.py'
     SECRET_KEY = 'supersecretkey123'
     FLASK_ENV = os.environ.get('FLASK_ENV')
-    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLITE_URI') ## temporary, replace with pgsql db later
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///Latencydb.db' #os.environ.get('SQLITE_URI') ## temporary, replace with pgsql db later
     SQLALCHEMY_TRACK_MODIFICATIONS = False  ##supresses track modification memory usage warning
-    SECURITY_PASSWORD_SALT = os.environ.get('PW_SALT')
+    SECURITY_PASSWORD_SALT = "wdfwdwd"#os.environ.get('PW_SALT')
     SECURITY_LOGIN_URL="/login"
     SECURITY_LOGOUT_URL = "/bye"
 

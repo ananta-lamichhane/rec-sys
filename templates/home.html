@@ -7,9 +7,15 @@
 
 {% block content %}
 <p>
- This survey app is basically to help researcher regarding the  Collaborative Filtering. SOo this  web-based tool enables researchers to conduct user studies conveniently and thus evaluate their algorithms more easily on user-centric evaluation metrics. We will also test a novel technique to support conducting user studies.
+  Here we'll write some short description of the survey.
+  maybe provide option to login as user and administrator i.e. reseracher.
+
 </p>
-
-
-
+  <form method="post">
+    <label for="username">Username</label>
+    <input name="username" id="username" required>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+    <input type="submit" value="Log In">
+  </form>
 {% endblock %}
