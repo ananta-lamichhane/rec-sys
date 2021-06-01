@@ -93,9 +93,8 @@ class Reclist(login_database.Model):
     __tablename__ = 'reclist'
     id = login_database.Column(login_database.Integer(), primary_key=True)
     length = login_database.Column(login_database.Integer(), unique=True)
-    algorithm_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('algorithm.id'),
-                                         unique=True)
-    user_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('user.id'), unique=True)
+    algorithm_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('algorithm.id'))#,unique=True)
+    user_id = login_database.Column(login_database.Integer(), login_database.ForeignKey('user.id'))#, unique=True)
 
 
 class Study_Algorithms(login_database.Model):
