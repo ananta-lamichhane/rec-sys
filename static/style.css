@@ -58,29 +58,36 @@ ul {
 
 }
 li {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 10px;
-    margin-right: 10px;
     list-style-type: none;
     /*height: 600px;*/
     flex-grow: 1;
 }
 
 img {
+   /* margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;*/
     max-height: 500px;
     min-width: 300px;
     object-fit: contain;
     vertical-align: bottom;
+    horizontal-align: center;
+    display: block;
+}
+.column {
+    align:center;
 }
 
 
 
+
 /*ratings slider in survey page*/
-.rating-slider {
+.slider {
     margin-top : 10px;
     margin-bottom: 10px;
     width: 300px;
+    align: center;
     /*margin: auto;*/
 }
 .slider {
@@ -106,16 +113,47 @@ img {
     border-radius: 50%;
 }
 
-.slider::-moz-range-thumb {
+.posterrow {
+    align:center;
+    text-align:center;
+}
+
+.rating-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
     border-radius:50%;
     cursor: pointer;
 }
+.survey-page-intro {
+    text-align: center;
+}
 
 /*recommendation page*/
+
+.poster-div {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /*margin-left: 2px;
+    margin-right: 2px;*/
+    max-height: 300px;
+    min-width: 180px;
+    object-fit: contain;
+    vertical-align: bottom;
+
+}
 .recom-rating {
     margin-top: 20px;
     margin-bottom: 20px;
-    align: left;
+    text-align: center;
+    border: 3px solid black;
+}
+.recom-question-slider {
+    text-align: center;
+
+}
+.rating-slider {
+    align: center;
+}
+.title-year {
+    text-align: center;
 }
