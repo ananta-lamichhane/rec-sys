@@ -12,7 +12,7 @@
 {% set active_page = 'survey'%}
 
 {% block content %}
-<p>
+<p class="survey-page-intro" id="survey-page-intro">
     Welcome to the survey portal.<br>
     Please rate the following movies.<br>
     Check "No idea" if you haven't yet seen the movie. <br>
@@ -21,27 +21,25 @@
 
 
 <div class="poster-and-rating">
-    <ul class="posterrow">
-        <li class="column">
+    <!--ul class="posterrow"-->
+        <!--li class="column"-->
             <p id="title-and-year">{{poster_url['title']}}({{poster_url['year']}})</p>
             <img src="{{poster_url['poster']}}" class="poster" id="poster">
             <form class="survey-form" id="slider-form" action="" method="post">
             <div class="rating-slider">
                 <input type="range" name="rating" min="0" max="5" step="0.5" value="2.5" class="slider" id="rating-slider" oninput="this.nextElementSibling.value = this.value">
                 <output>2.5</output>
-                <input type="checkbox" name="no-rating" value="False" id="poster-checkbox">
-                <label for="poster-checkbox">No idea</label>
-                <input type="hidden" name="formtype" value="2">
-                <input type="hidden" name="imdb_id" id="imdbid" value="{{poster_url['imdb_id']}}">
-                <input type="submit" class="submit-button" name="submit-rating" id="submit-button" value="Submit">
             </div>
+                <div class="no-idea-and-submit">
+                    <input type="checkbox" name="no-rating" value="False" id="poster-checkbox">
+                    <label for="poster-checkbox">No idea</label>
+                    <input type="hidden" name="formtype" value="2">
+                    <input type="hidden" name="imdb_id" id="imdbid" value="{{poster_url['imdb_id']}}">
+                    <input type="submit" class="submit-button" name="submit-rating" id="submit-button" value="Submit">
+                </div>
             </form>
-        </li>
-
-
-
-
-</ul>
+        <!--/li-->
+<!--/ul-->
 </div>
 
 

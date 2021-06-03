@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    Forbidden
+    Error
 {% endblock title%}
 {% set active_page = 'forbidden'%}
 
@@ -8,7 +8,7 @@
 {% block content %}
  <div class="warning-box">
   <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-  Warning: You can not visit this page without login.
+     Warning: {{text}}
 </div>
 <p>
 

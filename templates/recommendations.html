@@ -8,78 +8,69 @@
 {% endblock %}
 
 {% block content %}
-<div class="poster-and-rating">
+<div class="recom-posters">
     <ul class="posterrow">
     {% for item in poster_urls1 %}
         <li class="column">
-            <p>{{item['title']}}({{item['year']}})</p>
-            <img src="{{item['poster']}}" class="posters">
-            <!--form class="survey-form" id="{{id}}" action="" method="post">
-            <div class="rating-slider">
-                    <input type="range" name="rating" min="0" max="5" step="0.5" value="2.5" class="slider" id="rating{{id}}">
-                <input type="checkbox" name="no-rating" value="False" id="dontknow{{id}}">
-                <label for="dontknow{{id}}">No idea</label>
-                <input type="hidden" name="formtype" value="2">
-                <input type="submit" class="submit-button" name="submit-rating" id="submit{{id}}" value="Submit">
+            <p class="title-year">{{item['title']}}({{item['year']}})</p>
+            <div clas="poster-div">
+                <img src="{{item['poster']}}" class="recom-posters">
             </div>
-            </form-->
         </li>
+    {% endfor%}
+    </ul>
+</div>
 
 
+<input type="hidden" name="reclist_id1" id="reclist_id1" value={{reclist_id1}}>
+<div class="recom-rating" id="recom-rating-1">
+    <div class="question-text">
+        <p>How did you find the recommendation list? Please rate from a scale of 0 to 10.</p>
+    </div>
 
-
-    {% endfor %}
-        <input type="hidden" name="reclist_id1" id="reclist_id1" value={{reclist_id1}}>
-
-
-        <center>How did you find the recommendation list? Please rate from a scale of 0 to 10.</center>
-
-        <form class="recom-rating" id="recommendation-rating-first" action="" method="post">
+    <div class="form-wrapper">
+        <form class="recommendation-rating-first" id="recommendation-rating-first" action="" method="post">
             <div class="rating-slider">
                 <input type="range" name="rating" min="0" max="10" step="0.5" value="5" class="slider" id="slider-recom-rating" oninput="this.nextElementSibling.value = this.value">
-                <output>2.5</output>
+                <output class="rating-value">2.5</output>
                 <input type="hidden" name="formtype" value="2">
-                <input type="submit" class="submit-button" name="submit-rating" id="submit{{id}}" value="Submit">
+                <div class="submit-reom-rating">
+                    <input type="submit" class="submit-button" name="submit-rating" id="submit{{id}}" value="Submit">
+                </div>
+
             </div>
         </form>
+    </div>
+
+</div>
 
 
 
-    <div class="poster-and-rating">
+
+<div class="recom-posters">
     <ul class="posterrow">
     {% for item in poster_urls2 %}
         <li class="column">
-            <p>{{item['title']}}({{item['year']}})</p>
-            <img src="{{item['poster']}}" class="posters">
-
-            <!--form class="survey-form" id="{{id}}" action="" method="post">
-            <div class="rating-slider">
-                    <input type="range" name="rating" min="0" max="5" step="0.5" value="2.5" class="slider" id="rating{{id}}">
-                <input type="checkbox" name="no-rating" value="False" id="dontknow{{id}}">
-                <label for="dontknow{{id}}">No idea</label>
-                <input type="hidden" name="formtype" value="2">
-                <input type="submit" class="submit-button" name="submit-rating" id="submit{{id}}" value="Submit">
-            </div>
-            </form-->
+            <p class="title-year">{{item['title']}}({{item['year']}})</p>
+            <img src="{{item['poster']}}" class="recom-posters">
         </li>
-
-
     {% endfor %}
-
-        <input type="hidden" name="reclist_id2" id="reclist_id2" value={{reclist_id1}}>
-        <center>How did you find the recommendation list? Please rate from a scale of 0 to 10.</center>
-
-        <form class="recom-rating" id="recommendation-rating-second" action="" method="post">
-            <div class="rating-slider">
-                <input type="range" name="rating" min="0" max="10" step="0.5" value="5" class="slider" id="slider-recom-rating-2" oninput="this.nextElementSibling.value = this.value">
-                <output>2.5</output>
-                <input type="hidden" name="formtype" value="2">
-                <input type="submit" class="submit-button" name="submit-rating" id="submit{{id}}" value="Submit">
-            </div>
-        </form>
-
-
-
-</ul>
+    </ul>
 </div>
+<div class="recom-rating" id="recom-rating-2">
+    <p>How did you find the recommendation list? Please rate from a scale of 0 to 10.</p>
+
+    <form class="recommendation-rating-second" id="recommendation-rating-second" action="" method="post">
+        <div class="rating-slider">
+            <input type="range" name="rating" min="0" max="10" step="0.5" value="5" class="slider" id="slider-recom-rating-2" oninput="this.nextElementSibling.value = this.value">
+            <output class="rating-value">2.5</output>
+            <input type="hidden" name="formtype" value="2">
+            <input type="submit" class="submit-button" name="submit-rating" id="submit{{id}}" value="Submit">
+        </div>
+    </form>
+</div>
+<input type="hidden" name="reclist_id2" id="reclist_id2" value={{reclist_id2}}>
+
+
+
 {% endblock %}
