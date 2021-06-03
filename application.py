@@ -8,7 +8,7 @@ import email_validator
 
 
 load_dotenv('.ENV')
-login_database = SQLAlchemy() ## initialize a new database
+db = SQLAlchemy() ## initialize a new database
 login_manager = LoginManager() ## login manager helps implement login_required, etc.
 
 
@@ -16,7 +16,7 @@ login_manager = LoginManager() ## login manager helps implement login_required, 
 def create_app(): #config_file='flask_config.py'):
     app = Flask(__name__)
     app.config.from_object('flask_config.Configurations') ## load configs from the file
-    login_database.init_app(app)
+    db.init_app(app)
 
     from views import main_bp
 
@@ -26,16 +26,16 @@ def create_app(): #config_file='flask_config.py'):
     from database.user_model import user_datastore
     security = Security(app, user_datastore)
     with app.app_context(): ### need application context to initialize database.
-        login_database.create_all()
-        login_database.session.commit()
+        db.create_all()
+        db.session.commit()
         login_manager.init_app(app)
-        if not login_database.session.query(User).filter_by(name='admin').first(): ## create admin during start
+        if not db.session.query(User).filter_by(name='admin').first(): ## create admin during start
             user_datastore.create_user(id=999999,token_id=9999, name='admin', password='admin', online_user=True)
-            login_database.session.commit()
+            db.session.commit()
 
     @login_manager.user_loader
     def load_user(user_id):
-        return login_database.session.query(User).filter_by(id=user_id).first()
+        return db.session.query(User).filter_by(id=user_id).first()
 
     @login_manager.unauthorized_handler ## serves forbidden.html in case user no logged in.
     def unauth_handler():
