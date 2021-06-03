@@ -16,7 +16,7 @@ import random
 #         poster_url_list[imdb_id] = data
 #
 #     return poster_url_list
-def generate_poster_url_dict(imdb_id):
+def generate_movie_info(imdb_id):
     """
     generates a list of poster urls
     :param imdb_id:
