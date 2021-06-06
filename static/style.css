@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css2?family=Mulish&display=swap");
 
 body {
-    background: #b3d8e8;
+    background: #b3d8e8 !important; /*override bootstrap setting*/
     padding:0;
     margin: 0;
 }
@@ -11,13 +11,30 @@ body {
 }
 
 
-nav {
+.nav {
     background: #e6f7e8;
     height: 70px;
     font-family: 'Mulish', sans-serif;
     font-weight: 300;
-    font-size: 30px;
     margin-bottom:10px;
+}
+.nav-item {
+    font-size: 30px;
+}
+
+.snet-logo-small {
+    margin: auto;
+    align: top;
+}
+
+.navbar-default .navbar-brand {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+.navbar-brand img {
+  height: 100%;
+  margin-right: 20px;
 }
 
 
@@ -152,6 +169,7 @@ survey-poster-img {
     display: flex;
     margin: auto;
     text-align: center;
+    justify-content: center;
 
 
 }
