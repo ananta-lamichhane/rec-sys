@@ -6,26 +6,30 @@
 {% set active_page = 'login'%}
 
 {% block content %}
- <div class="column is-4 is-offset-4">
+ <div class="login-section">
     <h3 class="title">Please sign in</h3>
-    <div class="box">
+    <div class="login-box">
         <form class = "login-form" method="POST" action="">
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="token_number" placeholder="Token Number" value="{{request.form.token_nr}}" autofocus="">
+                    <label class="label-token-nr" for="token-number">Token Number</label>
+                    <input class="input is-large" type="text" name="token_number" id="token-number" placeholder="Token Number" value="{{request.form.token_nr}}" autofocus="">
                 </div>
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="name" placeholder="Name" value="{{request.form.username}}"  autofocus="">
+                    <label class="label-username" for="user-name">Username</label>
+                    <input class="input is-large" type="text" name="name" id="user-name" placeholder="Name" value="{{request.form.username}}"  autofocus="">
                 </div>
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="password" name="password" value="{{request.form.password}}" placeholder="Password">
+                    <label class= "label-password" for="user-password">Password</label>
+                    <input class="input is-large" type="password" name="password" id="user-password" value="{{request.form.password}}" placeholder="Password">
+
                 </div>
             </div>
-            <button class="button is-block is-info is-large is-fullwidth">Log in</button>
+            <button class="submit-login">Log in</button>
         </form>
     </div>
 </div>
