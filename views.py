@@ -285,7 +285,7 @@ def recommend():
     if request.method == 'POST': # if reating is submited
         serendipity_rating = float(request.form.get('rating'))
         reclist_id = int(request.form.get('reclist_id'))
-        print("reclist id from form: "+ str(reclist_id))
+
 
         '''when an item is selected for recommendation, a reclistitem must be created with it
         many reclistitems will be added a reclist and will be populated with userid and algo id
@@ -307,17 +307,18 @@ def recommend():
     reclist_knn = db.session.query(Reclist).filter_by(user_id=402 + current_user.token_id, algorithm_id=1).first()
     print("reclist knn: " + str(reclist_knn.id) + " reclist svd: "+ str(reclist_svd.id))
 
+
     #find reclistitems (movies) that belong to each recommendation groups
     reclistitems_svd = db.session.query(ReclistItem).filter_by(reclist_id=reclist_svd.id)
     reclistitems_knn = db.session.query(ReclistItem).filter_by(reclist_id=reclist_knn.id)
+
 
 
     ## recommendations = highest rated movies by the user most similar to the current user, e.g. user no 483
     all_data_svd = [] ## accumulate top recommendations for each algo type here.
     all_data_knn = []
     for recitem in reclistitems_knn:
-        print(f'recitem = {recitem.item_id}')
-        imdb_no = db.session.query(Item).filter_by(id=recitem.id).first().imdb_id
+        imdb_no = db.session.query(Item).filter_by(id=recitem.item_id).first().imdb_id
         if len(all_data_knn) ==5:
             break
         movie_data = generate_movie_info(imdb_no)
@@ -329,6 +330,19 @@ def recommend():
         movie_data_svd = generate_movie_info(imdb_no) #caution:generate_poster_url_dict(generates a dict will all data pertaining to the movie)
         all_data_svd.append(movie_data_svd)
     #pass two lists with movie information to html, need to get recids back from html too
+    print("Movies suggested by Algorithm 1")
+    print("-----------------------------------------------------------------------------")
+
+    for movie in all_data_knn:
+        print(movie['title'])
+    print("-----------------------------------------------------------------------------")
+    print("Movies suggested by Algorithm 2")
+    print("-----------------------------------------------------------------------------")
+
+    for movie in all_data_svd:
+        print(movie['title'])
+    print("-----------------------------------------------------------------------------")
+
     return render_template('recommendations.html', poster_urls1=all_data_knn, poster_urls2=all_data_svd, reclist_id1=reclist_svd.id, reclist_id2=reclist_knn.id)
 
 # @main_bp.route('/favicon.ico')
