@@ -7,7 +7,11 @@
 <script src="{{url_for('static', filename='handle_recom_eval.js')}}"></script>
 {% endblock %}
 
+
+
 {% block content %}
+<h3>Here are some movies you may like based on your ratings.</h3>
+<h4>Recommendations 1</h4>
 <div class="recom-posters">
     <ul class="posterrow">
     {% for item in poster_urls1 %}
@@ -45,7 +49,7 @@
 </div>
 
 
-
+<h4>Recommendations 2</h4>
 
 <div class="recom-posters">
     <ul class="posterrow">
