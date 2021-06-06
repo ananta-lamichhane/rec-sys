@@ -50,12 +50,16 @@ $(document).ready(function(){
             type: 'POST'
         })
         .done(function(data){ //when post request was successful do the following
-         item_no ++;
-
-         $('#poster').attr('src', data['poster']); //update src attribute of the image with new URI
+        item_no ++;
+        curr = item_no -1;
+         $('#survey-poster').attr('src', data['poster']); //update src attribute of the image with new URI
          $('#imdbid').attr('value', data['imdb_id']); //update IMDB ID of the movie
-         var title_and_year = '' + data['title'] + '' + '(' + data['year'] +')';
+         var title_and_year = '' + data['title'] + '' + ' (' + data['year'] +')';
          $('#title-and-year').text(title_and_year); // update title and year which appears over the movie poster
+         $('#rating-output').text('0');
+         $('#rating-slider').val(0);
+         $('#image-number').text(item_no);
+
         });
 
       //prevent form being submitted automatically after pressing submit
