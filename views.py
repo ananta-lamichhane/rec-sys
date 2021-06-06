@@ -52,7 +52,9 @@ def login():
 def survey():
     no_of_questions=10 ## number of survey questionnaires, we can query it from database later.
     if request.method == "POST":
-        if request.form.get('formtype') == "2" and int(request.form.get('next_item')) < no_of_questions:  ## form is submitting movie ratings.
+        dont_know = request.form.get('dont_know')
+        print(f'dont know value {dont_know}')
+        if request.form.get('formtype') == "2" and int(request.form.get('next_item')) < no_of_questions and dont_know== '0':  ## form is submitting movie ratings.
             imdb_id = request.form.get('imdb_id')
             next_item = request.form.get('next_item')
             #print("next item "+ str(next_item))
