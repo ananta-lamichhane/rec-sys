@@ -63,7 +63,7 @@ li {
     flex-grow: 1;
 }
 
-img {
+survey-poster-img {
    /* margin-top: 20px;
     margin-bottom: 20px;
     margin-left: 10px;
@@ -113,10 +113,7 @@ img {
     border-radius: 50%;
 }
 
-.posterrow {
-    align:center;
-    text-align:center;
-}
+
 
 .rating-slider::-moz-range-thumb {
     width: 20px;
@@ -128,8 +125,60 @@ img {
     text-align: center;
 }
 
+.poster-and-rating {
+    margin: auto;
+   /* width: 60%;*/
+
+}
+.survey-poster-img {
+    display: block;
+   /* width: 60%;*/
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.no-idea-and-submit {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+
+}
+.title-and-year {
+    text-align: center;
+    font-size: 30px;
+}
+.pg-no {
+    display: flex;
+    margin: auto;
+    text-align: center;
+
+
+}
+.varno {
+    margin-left: 4px;
+    margin-right: 4px;
+}
+.varno, .text1, .text2: {
+    text-align: right;
+}
+.no-ida {
+    margin-right: 40px;
+
+}
+.survey-submit-button{
+    margin-left: 40px;
+}
+.rating-output {
+    border: 1px solid black;
+}
+
 /*recommendation page*/
 
+.posterrow {
+    align:center;
+    text-align:center;
+}
 .poster-div {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -145,15 +194,40 @@ img {
     margin-top: 20px;
     margin-bottom: 20px;
     text-align: center;
-    border: 3px solid black;
 }
 .recom-question-slider {
     text-align: center;
 
 }
 .rating-slider {
-    align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 .title-year {
+    text-align: center;
+
+}
+
+/*login page*/
+
+.label-token-nr, .label-username, .label-password {
+    display: inline-block;
+    float: center;
+    clear: center;
+    text-align: right;
+    width: 250px;
+}
+.login-box {
+    text-align: center;
+}
+.login-section {
+    text-align: center;
+}
+
+.submit-login {
+    margin-top: 20px;
+    margin-left: 100px;
     text-align: center;
 }
