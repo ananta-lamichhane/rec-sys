@@ -16,26 +16,33 @@
     Welcome to the survey portal.<br>
     Please rate the following movies.<br>
     Check "No idea" if you haven't yet seen the movie. <br>
-    Click "Done" to finish the survey and get your recommendations.
 </p>
 
+
+        <div class="pg-no">
+            <h2 class="text1">Image  </h2>
+            <h2 class="varno" id="image-number">1</h2>
+            <h2 class="text2">  of 10.</h2>
+        </div>
 
 <div class="poster-and-rating">
     <!--ul class="posterrow"-->
         <!--li class="column"-->
-            <p id="title-and-year">{{poster_url['title']}}({{poster_url['year']}})</p>
-            <img src="{{poster_url['poster']}}" class="poster" id="poster">
+
+
+            <p class="title-and-year" id="title-and-year">{{poster_url['title']}} ({{poster_url['year']}})</p>
+            <img src="{{poster_url['poster']}}" class="survey-poster-img" id="survey-poster">
             <form class="survey-form" id="slider-form" action="" method="post">
             <div class="rating-slider">
-                <input type="range" name="rating" min="0" max="5" step="0.5" value="2.5" class="slider" id="rating-slider" oninput="this.nextElementSibling.value = this.value">
-                <output>2.5</output>
+                <input type="range" name="rating" min="0" max="5" step="0.5" value="0" class="slider" id="rating-slider" oninput="this.nextElementSibling.value = this.value">
+                <output id="rating-output">0</output>
             </div>
                 <div class="no-idea-and-submit">
-                    <input type="checkbox" name="no-rating" value="False" id="poster-checkbox">
+                    <input type="checkbox" class="no-idea" name="no-rating" value="False" id="poster-checkbox">
                     <label for="poster-checkbox">No idea</label>
                     <input type="hidden" name="formtype" value="2">
                     <input type="hidden" name="imdb_id" id="imdbid" value="{{poster_url['imdb_id']}}">
-                    <input type="submit" class="submit-button" name="submit-rating" id="submit-button" value="Submit">
+                    <input type="submit" class="survey-submit-button" name="submit-rating" id="submit-button" value="Submit">
                 </div>
             </form>
         <!--/li-->
