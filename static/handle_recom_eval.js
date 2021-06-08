@@ -28,7 +28,11 @@ $(document).ready(function(){
             reclist_id : reclist_id2
         },
         url: '/recommendations',
-        type: 'post'
+        type: 'POST'
+        })
+        .done(function(data){
+            console.log("bye");
+            window.location = '/bye';
         });
         event.preventDefault();
 
