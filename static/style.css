@@ -3,7 +3,6 @@
 body {
     background: #b3d8e8 !important; /*override bootstrap setting*/
     padding:0;
-    margin: 0;
 }
 .navigation {
     margin: 0;
@@ -248,4 +247,11 @@ survey-poster-img {
     margin-top: 20px;
     margin-left: 100px;
     text-align: center;
+}
+
+/*admin page*/
+
+.create-study-form {
+    display: flex;
+
 }
