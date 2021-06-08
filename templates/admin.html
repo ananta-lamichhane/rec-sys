@@ -7,9 +7,9 @@
 {% set active_page = 'admin'%}
 
 {% block content %}
-<p>
-    Create a new study
-    <form class="create-study-form" id="create-study-form" name="Create" action="" method="post">
+<h2>Survey Administration portal</h2>
+<h4>Create a new study</h4>
+<form class="create-study-form" id="create-study-form" name="Create" action="" method="post">
     <label for="dataset-name">Dataset Name:</label>
     <select id="dataset-name" name="datasets">
         <option value="Movielens 100K">100k</option>
@@ -26,59 +26,18 @@
     <label for="input-box">Name of the study: </label>
     <input class="text-box" id="input-box" placeholder="Name" name="survey-name">
     <br>
+
+
+</form>
+<h4>Load from csv files to database</h4>
+<form>
     <input type="submit" id="submit-box" name="db-action" value="Populate Database">
-    <br>
-    <p>Add online users to the database</p>
+</form>
+<h4>Add online users to the database</h4>
+<form class="add-users" id="add-users">
+
     <input type="submit" id="clear-box" name="db-action" value="Add Users">
-
 </form>
-</p>
-<br>
-    <p> Manage Users <p>
-<form class="Manage User form" id="Manage-User-form" name="Manage" action="" method="post">
-        <br>
-        <label for="Add User">Add New User</label>
-    <input type="submit" id="submit-box" name="db-action" value="Add User">
-    <br>
-
-   <br>
-        <label for="Delete User">Delete exist User.</label>
-    <input type="submit" id="submit-box" name="db-action" value="Delete User">
-    <br>
-
-</form>
-</p>
-
-
-</form>
-
-    <p> Manage Survey  <p>
-<form class="Manage survey form" id="Manage-Survey-form" name="Manage" action="" method="post">
-        <br>
-        <label for="Add Dataset">Add New Dataset</label>
-    <input type="submit" id="submit-box" name="db-action" value="Add Dataset">
-    <br>
-
-   <br>
-        <label for="Add new Algorithm">Add algorithms</label>
-    <input type="submit" id="submit-box" name="db-action" value="Add algorithms">
-    <br>
-
-</form>
-
-<form class="manage-users" id="Manage-User-form" name="Manage" action="" method="post">
-        <br>
-        <label for="manage-users-form">Add Users</label>
-    <input type="submit" id="add-user-submit" name="db-action" value="Add User">
-    <br>
-
-   <br>
-        <label for="Delete User">Delete exist User.</label>
-    <input type="submit" id="submit-box" name="db-action" value="Delete User">
-    <br>
-
-</form>
-<br>
 <br>
 <p>Change Admin Password</p>
  <form class= "login-form" method="POST" action="">
