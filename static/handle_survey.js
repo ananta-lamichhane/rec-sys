@@ -55,19 +55,22 @@ $(document).ready(function(){
             },
             url: '/survey',
             type: 'POST'
-        })
+        });
         .done(function(data){ //when post request was successful do the following
-        item_no ++;
-        curr = item_no -1;
-         $('#survey-poster').attr('src', data['poster']); //update src attribute of the image with new URI
-         $('#imdbid').attr('value', data['imdb_id']); //update IMDB ID of the movie
-         var title_and_year = '' + data['title'] + '' + ' (' + data['year'] +')';
-         $('#title-and-year').text(title_and_year); // update title and year which appears over the movie poster
-         $('#rating-output').text('0'); // reset output of the slider
-         $('#rating-slider').val(0); // reset slider value
-         $('#image-number').text(item_no); //increase item number
-         $('#poster-checkbox').prop('checked',false); //reset checkbox
-
+         if(item_no >= 10){ // reload to recommendations after 10 survey questions are asked.
+            window.location = '/recommendations';
+         }else{
+            item_no ++;
+            curr = item_no -1;
+            $('#survey-poster').attr('src', data['poster']); //update src attribute of the image with new URI
+            $('#imdbid').attr('value', data['imdb_id']); //update IMDB ID of the movie
+            var title_and_year = '' + data['title'] + '' + ' (' + data['year'] +')';
+            $('#title-and-year').text(title_and_year); // update title and year which appears over the movie poster
+            $('#rating-output').text('0'); // reset output of the slider
+            $('#rating-slider').val(0); // reset slider value
+            $('#image-number').text(item_no); //increase item number
+            $('#poster-checkbox').prop('checked',false); //reset checkbox
+         }
         });
 
       //prevent form being submitted automatically after pressing submit
