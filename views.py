@@ -54,22 +54,23 @@ def survey():
     if request.method == "POST":
         dont_know = request.form.get('dont_know')
         print(f'dont know value {dont_know}')
-        if request.form.get('formtype') == "2" and int(request.form.get('next_item')) < no_of_questions and dont_know== '0':  ## form is submitting movie ratings.
+        if request.form.get('formtype') == "2" and int(request.form.get('next_item')) < no_of_questions:  ## form is submitting movie ratings.
             imdb_id = request.form.get('imdb_id')
             next_item = request.form.get('next_item')
             #print("next item "+ str(next_item))
            # print("imdb id :  " + imdb_id)
             rating = request.form.get('rating')
-            itemid = db.session.query(Item).filter_by(imdb_id=imdb_id).first().id #what item is the imdb id from submission referring to?
-            print("----------------------------DATABASE ACTION---------------------------------------------")
-            if db.session.query(Rating).filter_by(user_id=current_user.id, item_id=itemid).first(): #if rating associated with this user and this item alredy exists.
-                print("Entry already exists: update rating")
-                db.session.query(Rating).filter_by(user_id=current_user.id, item_id = itemid).first().rating = rating #then update rating
-                db.session.commit()  ## commit to db
-            else:
-                print("Entry does not exist: create new rating")
-                db.session.add(Rating(rating=rating, dataset_id=1, item_id=itemid, user_id=current_user.id))# else create new entry
-                db.session.commit()  ## commit to db
+            itemid = db.session.query(Item).filter_by(imdb_id=imdb_id).first().id  # what item is the imdb id from submission referring to?
+            if dont_know == '0': # commit to db only if the don't know button is not pressed
+                print("----------------------------DATABASE ACTION---------------------------------------------")
+                if db.session.query(Rating).filter_by(user_id=current_user.id, item_id=itemid).first(): #if rating associated with this user and this item alredy exists.
+                    print("Entry already exists: update rating")
+                    db.session.query(Rating).filter_by(user_id=current_user.id, item_id = itemid).first().rating = rating #then update rating
+                    db.session.commit()  ## commit to db
+                else:
+                    print("Entry does not exist: create new rating")
+                    db.session.add(Rating(rating=rating, dataset_id=1, item_id=itemid, user_id=current_user.id))# else create new entry
+                    db.session.commit()  ## commit to db
             # we can query currently saved rating to current user from database.
             print("Entries in the database are:")
             current_ratings = db.session.query(Rating).filter_by(user_id=current_user.id) ##get all ratings assciated with this user
@@ -274,8 +275,8 @@ def admin():
 
         print("------------------------------DONE POPULATING DATABASE-----------------------------------")
         return render_template("admin.html")
-    text= "Your are not authorized to visit this page. Please log in as administrator."
-    return render_template('forbidden.html', text=text) #if not admin deny access
+    text1= "You are not authorized to visit this page. Please log in as administrator."
+    return render_template('forbidden.html', warn_text=text1) #if not admin deny access
 
 
 
