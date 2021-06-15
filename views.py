@@ -34,15 +34,17 @@ def login():
         user_password = request.form.get('password')
 
         u = User.query.filter_by(token_id=token_nr).first()
+        print(f'logging in as user {token_nr} and pasword {user_password} ')
         # check if user u already exists
         if u and u.password == user_password:
+            print("loggin in")
             login_user(u)
             if u.token_id == 9999 and u.name == 'admin': #if the logged in user is admin go directly to admin page
                 return redirect(url_for('main.admin'))
             return redirect(url_for('main.survey'))
         else:
             text = "This user does not exist. Please login with valid credentials."
-            return render_template('forbidden.html', text=text)
+            return render_template('forbidden.html', text="User does not exist.")
 
     return render_template("login.html")
 
@@ -87,6 +89,7 @@ def survey():
             #print("current movie id : " + str(currnt_movieId) + "next imdb id : " + str(next_movieId))
             next_imdbId = db.session.query(Item).filter_by(id=next_movieId).first().imdb_id
             poster_url = generate_movie_info(next_imdbId)
+            print(str(poster_url))
 
             #print("current imdbid : " + imdb_id + "next imdb id : " + next_imdbId)
             return poster_url  # return the json data as it is so ajax can handle it instead
