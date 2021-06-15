@@ -79,13 +79,12 @@ li {
     flex-grow: 1;
 }
 
-survey-poster-img {
-   /* margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 10px;
-    margin-right: 10px;*/
-    max-height: 500px;
-    min-width: 300px;
+.survey-poster-img {
+    max-height: 800px;
+    max-width: 800px;
+    min-width:400px;
+    height: auto;
+    width: auto;
     object-fit: contain;
     vertical-align: bottom;
     horizontal-align: center;
@@ -93,6 +92,15 @@ survey-poster-img {
 }
 .column {
     align:center;
+}
+.card-and-img {
+    display: flex;
+
+    justify-content: center;
+    flex: 1 1 auto;
+}
+.card-img {
+    width: auto !important;
 }
 
 
@@ -104,6 +112,7 @@ survey-poster-img {
     margin-bottom: 10px;
     width: 300px;
     align: center;
+    background: blue;
     /*margin: auto;*/
 }
 .slider {
@@ -127,6 +136,7 @@ survey-poster-img {
     height: 20px;
     cursor: pointer;
     border-radius: 50%;
+    color: red;
 }
 
 
@@ -136,6 +146,7 @@ survey-poster-img {
     height: 20px;
     border-radius:50%;
     cursor: pointer;
+    color: red;
 }
 .survey-page-intro {
     text-align: center;
@@ -146,12 +157,7 @@ survey-poster-img {
    /* width: 60%;*/
 
 }
-.survey-poster-img {
-    display: block;
-   /* width: 60%;*/
-    margin-left: auto;
-    margin-right: auto;
-}
+
 
 .no-idea-and-submit {
     display: block;
@@ -179,7 +185,7 @@ survey-poster-img {
 .varno, .text1, .text2: {
     text-align: right;
 }
-.no-ida {
+.no-idea {
     margin-right: 40px;
 
 }
@@ -190,23 +196,14 @@ survey-poster-img {
     border: 1px solid black;
 }
 
+
 /*recommendation page*/
 
 .posterrow {
     align:center;
     text-align:center;
 }
-.poster-div {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    /*margin-left: 2px;
-    margin-right: 2px;*/
-    max-height: 300px;
-    min-width: 180px;
-    object-fit: contain;
-    vertical-align: bottom;
 
-}
 .recom-rating {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -221,6 +218,7 @@ survey-poster-img {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+    fill: blue;
 }
 .title-year {
     text-align: center;
@@ -236,8 +234,18 @@ survey-poster-img {
     text-align: right;
     width: 250px;
 }
+.login-form {
+    width: 500px;
+    text-align: left;
+    background: aqua;
+    border-radius: 10px;
+    padding: 10px;
+
+
+}
 .login-box {
-    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 .login-section {
     text-align: center;
