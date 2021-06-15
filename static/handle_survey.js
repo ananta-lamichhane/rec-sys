@@ -55,7 +55,7 @@ $(document).ready(function(){
             },
             url: '/survey',
             type: 'POST'
-        });
+        })
         .done(function(data){ //when post request was successful do the following
          if(item_no >= 10){ // reload to recommendations after 10 survey questions are asked.
             window.location = '/recommendations';
@@ -66,6 +66,11 @@ $(document).ready(function(){
             $('#imdbid').attr('value', data['imdb_id']); //update IMDB ID of the movie
             var title_and_year = '' + data['title'] + '' + ' (' + data['year'] +')';
             $('#title-and-year').text(title_and_year); // update title and year which appears over the movie poster
+            $('#plot-text').text(data['plot']);
+            console.log("Director(s): "+ data['director']);
+            $('#director-name').text('Director(s): ' + data['director']);
+            $('#writer-name').text('Writer(s) ' + data['writer']);
+            $('#genre').text('Genre: '+ data['genre']);
             $('#rating-output').text('0'); // reset output of the slider
             $('#rating-slider').val(0); // reset slider value
             $('#image-number').text(item_no); //increase item number
