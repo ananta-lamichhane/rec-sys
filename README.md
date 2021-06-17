@@ -12,7 +12,7 @@ This project provides a web portal where researchers will be able to conduct sur
 2. Python 3.8
 
 ### Install steps
-Since the project is an web-app. You'll need a domain name to make it available on the internet. To run web-app locally on a web-server for development, follow follow steps. 
+Since the project is a web-app. You'll need a domain name to make it available on the internet. To run web-app locally on a web-server for development, follow follow steps. 
 1. Clone
 2. Set up a [python virtual environment.](https://docs.python.org/3/library/venv.html)
 3. Install requirements.`pip install -r requirements.txt`
