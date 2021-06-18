@@ -69,7 +69,7 @@ $(document).ready(function(){
             $('#plot-text').text(data['plot']);
             console.log("Director(s): "+ data['director']);
             $('#director-name').text('Director(s): ' + data['director']);
-            $('#writer-name').text('Writer(s) ' + data['writer']);
+            $('#writer-name').text('Writer(s): ' + data['writer']);
             $('#genre').text('Genre: '+ data['genre']);
             $('#rating-output').text('0'); // reset output of the slider
             $('#rating-slider').val(0); // reset slider value
