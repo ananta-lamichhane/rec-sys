@@ -38,19 +38,46 @@
 
     <input type="submit" id="clear-box" name="db-action" value="Add Users">
 </form>
-<br>
-<p>Change Admin Password</p>
- <form class= "login-form" method="POST" action="">
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="password" title="Old Password: " name="Old Password" placeholder="Old Password" value="{{request.form.old_password}}"  autofocus="">
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="password" title="New Password" name="New Password" value="{{request.form.password}}" placeholder="New Password">
-                </div>
-            </div>
-            <button class="button is-block is-info is-large is-fullwidth">Confirm</button>
-        </form>
+
+
+
+
+<h3>Create a new Study</h3>
+<p>Note: Creating a study extracts the data from csv files and populates the database. It may take several minutes</p>
+<form class="row g-3">
+  <div class="col-12">
+    <label for="inputEmail4" class="form-label">Name of the Study</label>
+    <input type="text" class="form-control" id="inputEmail4">
+  </div>
+  <div class="col-12">
+    <label for="inputAddress" class="form-label">Description of the Study</label>
+    <input type="text" class="form-control" id="inputAddress" placeholder="Optional: short description of your study">
+  </div>
+  <div class="col-md-6">
+    <label for="inputCity" class="form-label">City</label>
+    <input type="text" class="form-control" id="inputCity">
+  </div>
+  <div class="col-md-4">
+    <label for="inputState" class="form-label">Select Algorithms (One by one, please read documentation on file restrictions)</label>
+    <select id="inputState" class="form-select">
+      <option selected> SVD</option>
+      <option>KNN</option>
+    </select>
+  </div>
+  <div class="col-12">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="gridCheck">
+      <label class="form-check-label" for="gridCheck">
+        Activate the study
+      </label>
+    </div>
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Create</button>
+  </div>
+</form>
+
+
+
+
 {% endblock content %}
