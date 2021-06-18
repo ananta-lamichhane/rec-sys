@@ -25,11 +25,13 @@
         <img class="survey-poster-img" src="{{poster_url['poster']}}" alt="Card image cap" id="survey-poster">
     </div>
 
-    <div class="card" style="width: auto;">
-        <div class="card-horizontal">
+    <div class="card">
+        <!--div class="card-horizontal"-->
             <div class="card-body">
-                <h5 class="card-title" id="title-and-year">{{poster_url['title']}} ({{poster_url['year']}})</h5>
-                <p class="card-text" name="plot-text" id="plot-text">{{poster_url['plot']}}</p>
+                <div class="title-and-year-div">
+                    <h5 class="card-title" id="title-and-year">{{poster_url['title']}} ({{poster_url['year']}})</h5>
+                    <p class="card-text" name="plot-text" id="plot-text">{{poster_url['plot']}}</p>
+                </div>
                 <div class="contributors">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" name="director-name" id="director-name">Director(s): {{poster_url['director']}}</li>
@@ -55,7 +57,7 @@
             </form>
             <a href="#" class="card-link">Open IMDB page (new tab).</a>
       </div>
-    </div>
+    <!--/div-->
 </div>
 
 
