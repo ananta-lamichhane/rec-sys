@@ -82,7 +82,7 @@ li {
 .survey-poster-img {
     max-height: 800px;
     max-width: 800px;
-    min-width:400px;
+    min-width:500px;
     height: auto;
     width: auto;
     object-fit: contain;
@@ -95,10 +95,21 @@ li {
 }
 .card-and-img {
     display: flex;
-
-    justify-content: center;
-    flex: 1 1 auto;
+    flex-direction: row;
 }
+
+/*stack image and info card on top of each other for mobile view*/
+@media screen and (max-width: 800px) {
+  .card-and-img {
+    max-width: 100vmin; /*vimin is whichever is smaller of viewport height or width*/
+    flex-direction: column;
+  }
+  .survey-poster-img{
+    width: 100vmin;
+  }
+}
+
+
 .card-img {
     width: auto !important;
 }
