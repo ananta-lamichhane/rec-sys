@@ -1,4 +1,4 @@
-# Recomma : A web portal for conducting surveys and comparing recommender algorithms.
+# !!PROJECT MOVED OVER TO GITLAB ON PROJECT COORDINATOR'S REQUEST!!
 ## Introduction
 Recommendation systems are at the heart of many modern services. A good recommendation system helps you find a new item that may suit you on amazon and myriad of other e-commerce sites. Netflix's recommendation system can help you find a movie you'd want to watch. A good recommendation system can suggest you articles and books to read, podcasts and music to listen to, and much more. The ubiquity and relevance of recommender systesms in multitude of industries underscores a necessity of research into the implementation and effectiveness of various tools and algorithms that help to generate reommendation based on some existing data.
 
